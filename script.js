@@ -122,6 +122,43 @@
     destSteps.forEach(function(s){ destObserver.observe(s); });
   }
 
+  /* ---------- Destination page navigation ---------- */
+var destinationPages = [
+  './countryPages/us.html',
+  './countryPages/uk.html',
+  './countryPages/canada.html',
+  './countryPages/australia.html',
+  './countryPages/germany.html'
+];
+
+function openDestinationPage(element){
+  var index = parseInt(element.getAttribute('data-index'), 10);
+  var pageUrl = destinationPages[index];
+
+  if(pageUrl){
+    window.location.href = pageUrl;
+  }
+}
+
+function makeDestinationClickable(element){
+  element.setAttribute('role', 'link');
+  element.setAttribute('tabindex', '0');
+
+  element.addEventListener('click', function(){
+    openDestinationPage(element);
+  });
+
+  element.addEventListener('keydown', function(event){
+    if(event.key === 'Enter' || event.key === ' '){
+      event.preventDefault();
+      openDestinationPage(element);
+    }
+  });
+}
+
+destSteps.forEach(makeDestinationClickable);
+destPanels.forEach(makeDestinationClickable);
+
   /* ---------- Process line-draw + step reveal ---------- */
   var processSection = document.getElementById('process');
   var processFill = document.getElementById('processLineFill');
