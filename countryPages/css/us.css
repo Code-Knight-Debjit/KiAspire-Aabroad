@@ -1,0 +1,781 @@
+/* =========================================================
+   USA COUNTRY PAGE
+   File: countryPages/css/us.css
+   ========================================================= */
+
+/* ---------- USA page design variables ---------- */
+
+:root {
+  /* Primary colours */
+  --us-navy: #071c35;
+  --us-navy-light: #102f54;
+  --us-blue: #1f5f99;
+  --us-blue-light: #dcecf8;
+  --us-red: #b83b45;
+  --us-red-dark: #8e2630;
+
+  /* Neutral colours */
+  --us-white: #ffffff;
+  --us-ivory: #f7f3e9;
+  --us-surface: #eef4f7;
+  --us-text: #17212b;
+  --us-text-muted: #63717e;
+  --us-border: rgba(7, 28, 53, 0.14);
+
+  /* Transparent colours */
+  --us-white-80: rgba(255, 255, 255, 0.8);
+  --us-white-65: rgba(255, 255, 255, 0.65);
+  --us-white-20: rgba(255, 255, 255, 0.2);
+  --us-navy-90: rgba(7, 28, 53, 0.9);
+  --us-navy-70: rgba(7, 28, 53, 0.7);
+  --us-navy-25: rgba(7, 28, 53, 0.25);
+
+  /* Typography */
+  --us-font-heading: "Newsreader", Georgia, serif;
+  --us-font-body: "Archivo", Arial, sans-serif;
+
+  /* Spacing */
+  --us-section-space: 110px;
+  --us-section-space-tablet: 85px;
+  --us-section-space-mobile: 65px;
+  --us-container-padding: 24px;
+
+  /* Layout */
+  --us-container-width: 1240px;
+  --us-card-radius: 18px;
+  --us-button-radius: 999px;
+
+  /* Effects */
+  --us-shadow-small: 0 12px 35px rgba(7, 28, 53, 0.08);
+  --us-shadow-medium: 0 20px 55px rgba(7, 28, 53, 0.14);
+  --us-transition: 0.3s ease;
+}
+
+/* =========================================================
+   BASIC PAGE STYLES
+   ========================================================= */
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  background: var(--us-ivory);
+  color: var(--us-text);
+  font-family: var(--us-font-body);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+img {
+  max-width: 100%;
+}
+
+.container {
+  width: min(
+    calc(100% - (var(--us-container-padding) * 2)),
+    var(--us-container-width)
+  );
+  margin-inline: auto;
+}
+
+.display {
+  margin: 0;
+  font-family: var(--us-font-heading);
+  font-weight: 400;
+  line-height: 1;
+}
+
+.eyebrow {
+  margin: 0;
+  color: var(--us-red);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  line-height: 1.4;
+  text-transform: uppercase;
+}
+
+.eyebrow--light {
+  color: var(--us-blue-light);
+}
+
+/* =========================================================
+   COUNTRY HERO
+   ========================================================= */
+
+.country-hero {
+  position: relative;
+  min-height: 100vh;
+  display: flex;
+  align-items: flex-end;
+  overflow: hidden;
+  background: var(--us-navy);
+}
+
+.country-hero-image {
+  position: absolute;
+  inset: 0;
+}
+
+.country-hero-image img {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: cover;
+}
+
+.country-hero-overlay {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(
+      90deg,
+      var(--us-navy-90) 0%,
+      var(--us-navy-70) 45%,
+      var(--us-navy-25) 100%
+    ),
+    linear-gradient(
+      0deg,
+      var(--us-navy-90) 0%,
+      transparent 60%
+    );
+}
+
+.country-hero-content {
+  position: relative;
+  z-index: 2;
+  padding-top: 190px;
+  padding-bottom: 90px;
+  color: var(--us-white);
+}
+
+.country-hero-content h1 {
+  max-width: 900px;
+  margin: 18px 0 26px;
+  color: var(--us-white);
+  font-size: clamp(58px, 9vw, 126px);
+  line-height: 0.9;
+}
+
+.country-hero-description {
+  max-width: 680px;
+  margin: 0;
+  color: var(--us-white-80);
+  font-size: 18px;
+  line-height: 1.75;
+}
+
+.country-hero-actions {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 28px;
+  margin-top: 38px;
+}
+
+.country-text-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--us-white);
+  font-weight: 600;
+  text-decoration: none;
+  transition: gap var(--us-transition);
+}
+
+.country-text-link:hover {
+  gap: 16px;
+}
+
+/* =========================================================
+   GENERAL COUNTRY SECTIONS
+   ========================================================= */
+
+.country-section {
+  padding: var(--us-section-space) 0;
+}
+
+.country-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 0.9fr);
+  gap: 90px;
+  align-items: start;
+}
+
+.country-section-heading h2 {
+  max-width: 720px;
+  margin-top: 16px;
+  color: var(--us-navy);
+  font-size: clamp(42px, 5vw, 70px);
+}
+
+.country-section-content {
+  color: var(--us-text-muted);
+  font-size: 18px;
+  line-height: 1.85;
+}
+
+.country-section-content p {
+  margin: 0;
+}
+
+.country-section-content p + p {
+  margin-top: 25px;
+}
+
+/* =========================================================
+   KEY HIGHLIGHTS SECTION
+   ========================================================= */
+
+.country-highlights {
+  position: relative;
+  padding: var(--us-section-space) 0;
+  overflow: hidden;
+  background:
+    radial-gradient(
+      circle at 90% 5%,
+      rgba(31, 95, 153, 0.5),
+      transparent 32%
+    ),
+    linear-gradient(
+      135deg,
+      var(--us-navy),
+      var(--us-navy-light)
+    );
+  color: var(--us-white);
+}
+
+/* Decorative circle */
+
+.country-highlights::before {
+  position: absolute;
+  top: -180px;
+  right: -180px;
+  width: 430px;
+  height: 430px;
+  border: 1px solid var(--us-white-20);
+  border-radius: 50%;
+  content: "";
+}
+
+.country-highlights .country-section-heading {
+  position: relative;
+  z-index: 1;
+}
+
+.country-highlights .country-section-heading h2 {
+  color: var(--us-white);
+}
+
+.country-highlight-grid {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 22px;
+  margin-top: 60px;
+}
+
+.country-highlight-card {
+  position: relative;
+  min-height: 330px;
+  padding: 34px 30px;
+  overflow: hidden;
+  border: 1px solid var(--us-white-20);
+  border-radius: var(--us-card-radius);
+  background: rgba(255, 255, 255, 0.06);
+  backdrop-filter: blur(8px);
+  transition:
+    transform var(--us-transition),
+    background var(--us-transition),
+    border-color var(--us-transition);
+}
+
+.country-highlight-card::after {
+  position: absolute;
+  right: -60px;
+  bottom: -80px;
+  width: 170px;
+  height: 170px;
+  border-radius: 50%;
+  background: rgba(184, 59, 69, 0.25);
+  content: "";
+  transition: transform var(--us-transition);
+}
+
+.country-highlight-card:hover {
+  transform: translateY(-10px);
+  border-color: rgba(255, 255, 255, 0.45);
+  background: rgba(255, 255, 255, 0.11);
+}
+
+.country-highlight-card:hover::after {
+  transform: scale(1.3);
+}
+
+.country-card-number {
+  display: inline-flex;
+  width: 48px;
+  height: 48px;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--us-white-20);
+  border-radius: 50%;
+  color: var(--us-blue-light);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+}
+
+.country-highlight-card h3 {
+  position: relative;
+  z-index: 1;
+  margin: 65px 0 15px;
+  color: var(--us-white);
+  font-family: var(--us-font-heading);
+  font-size: 29px;
+  font-weight: 500;
+  line-height: 1.15;
+}
+
+.country-highlight-card p {
+  position: relative;
+  z-index: 1;
+  margin: 0;
+  color: var(--us-white-65);
+  font-size: 15px;
+  line-height: 1.75;
+}
+
+/* =========================================================
+   POPULAR COURSES
+   ========================================================= */
+
+.country-course-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 24px;
+  margin-top: 55px;
+}
+
+.country-course-card {
+  position: relative;
+  padding: 38px;
+  overflow: hidden;
+  border: 1px solid var(--us-border);
+  border-radius: var(--us-card-radius);
+  background: var(--us-white);
+  box-shadow: var(--us-shadow-small);
+  transition:
+    transform var(--us-transition),
+    box-shadow var(--us-transition),
+    border-color var(--us-transition);
+}
+
+.country-course-card::before {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 6px;
+  height: 100%;
+  background: var(--us-red);
+  content: "";
+}
+
+.country-course-card:hover {
+  transform: translateY(-7px);
+  border-color: rgba(31, 95, 153, 0.35);
+  box-shadow: var(--us-shadow-medium);
+}
+
+.country-course-card h3 {
+  margin: 0 0 14px;
+  color: var(--us-navy);
+  font-family: var(--us-font-heading);
+  font-size: 30px;
+  font-weight: 500;
+}
+
+.country-course-card p {
+  margin: 0;
+  color: var(--us-text-muted);
+  line-height: 1.75;
+}
+
+/* =========================================================
+   ADMISSION REQUIREMENTS
+   ========================================================= */
+
+.country-requirements {
+  background: var(--us-surface);
+}
+
+.country-requirements-list {
+  overflow: hidden;
+  border: 1px solid var(--us-border);
+  border-radius: var(--us-card-radius);
+  background: var(--us-white);
+  box-shadow: var(--us-shadow-small);
+}
+
+.requirement-item {
+  display: grid;
+  grid-template-columns: 62px 1fr;
+  gap: 20px;
+  align-items: center;
+  padding: 23px 28px;
+  border-bottom: 1px solid var(--us-border);
+  transition: background var(--us-transition);
+}
+
+.requirement-item:last-child {
+  border-bottom: 0;
+}
+
+.requirement-item:hover {
+  background: var(--us-blue-light);
+}
+
+.requirement-item span {
+  display: inline-flex;
+  width: 42px;
+  height: 42px;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: var(--us-navy);
+  color: var(--us-white);
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.requirement-item p {
+  margin: 0;
+  color: var(--us-text);
+  font-size: 17px;
+  line-height: 1.5;
+}
+
+/* =========================================================
+   APPLICATION PROCESS
+   ========================================================= */
+
+.country-process {
+  position: relative;
+  padding: var(--us-section-space) 0;
+  overflow: hidden;
+  background: var(--us-ivory);
+}
+
+.country-process .country-section-heading h2 {
+  color: var(--us-navy);
+}
+
+.country-process .eyebrow--light {
+  color: var(--us-red);
+}
+
+.country-process-grid {
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0;
+  margin-top: 70px;
+}
+
+/* Horizontal process line */
+
+.country-process-grid::before {
+  position: absolute;
+  top: 35px;
+  right: 12%;
+  left: 12%;
+  height: 2px;
+  background: var(--us-border);
+  content: "";
+}
+
+.country-process-step {
+  position: relative;
+  z-index: 1;
+  padding: 0 22px;
+  text-align: center;
+}
+
+.country-process-step > span {
+  display: inline-flex;
+  width: 70px;
+  height: 70px;
+  align-items: center;
+  justify-content: center;
+  border: 7px solid var(--us-ivory);
+  border-radius: 50%;
+  background: var(--us-navy);
+  box-shadow: 0 0 0 2px var(--us-blue);
+  color: var(--us-white);
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  transition:
+    transform var(--us-transition),
+    background var(--us-transition);
+}
+
+.country-process-step:hover > span {
+  transform: scale(1.1);
+  background: var(--us-red);
+}
+
+.country-process-step h3 {
+  margin: 30px 0 14px;
+  color: var(--us-navy);
+  font-family: var(--us-font-heading);
+  font-size: 27px;
+  font-weight: 500;
+  line-height: 1.2;
+}
+
+.country-process-step p {
+  margin: 0;
+  color: var(--us-text-muted);
+  font-size: 15px;
+  line-height: 1.75;
+}
+
+/* =========================================================
+   CALL TO ACTION
+   ========================================================= */
+
+.country-cta {
+  padding: 100px 0;
+  background:
+    linear-gradient(
+      120deg,
+      var(--us-blue-light),
+      var(--us-white)
+    );
+}
+
+.country-cta-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 60px;
+}
+
+.country-cta-inner h2 {
+  max-width: 750px;
+  margin: 15px 0;
+  color: var(--us-navy);
+  font-size: clamp(42px, 5vw, 68px);
+}
+
+.country-cta-inner p {
+  max-width: 650px;
+  margin: 0;
+  color: var(--us-text-muted);
+  font-size: 17px;
+  line-height: 1.7;
+}
+
+/* =========================================================
+   BUTTON OVERRIDES
+   ========================================================= */
+
+.country-hero .btn-light {
+  display: inline-flex;
+  min-height: 52px;
+  align-items: center;
+  justify-content: center;
+  padding: 0 27px;
+  border: 1px solid var(--us-white);
+  border-radius: var(--us-button-radius);
+  background: var(--us-white);
+  color: var(--us-navy);
+  font-weight: 600;
+  text-decoration: none;
+  transition:
+    background var(--us-transition),
+    color var(--us-transition),
+    transform var(--us-transition);
+}
+
+.country-hero .btn-light:hover {
+  transform: translateY(-3px);
+  background: transparent;
+  color: var(--us-white);
+}
+
+.country-cta .btn-dark {
+  flex-shrink: 0;
+  background: var(--us-navy);
+  color: var(--us-white);
+}
+
+.country-cta .btn-dark:hover {
+  background: var(--us-red);
+}
+
+/* =========================================================
+   FOOTER
+   ========================================================= */
+
+.country-footer {
+  padding: 30px 0;
+  border-top: 1px solid var(--us-border);
+  background: var(--us-navy);
+  color: var(--us-white);
+}
+
+.country-footer-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 30px;
+}
+
+.country-footer-inner p {
+  margin: 0;
+  color: var(--us-white-65);
+  font-size: 14px;
+}
+
+.country-footer-brand {
+  color: var(--us-white);
+  font-size: 18px;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+/* =========================================================
+   TABLET RESPONSIVE
+   ========================================================= */
+
+@media (max-width: 992px) {
+  .country-section,
+  .country-highlights,
+  .country-process {
+    padding: var(--us-section-space-tablet) 0;
+  }
+
+  .country-grid {
+    grid-template-columns: 1fr;
+    gap: 45px;
+  }
+
+  .country-highlight-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .country-process-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 45px 20px;
+  }
+
+  .country-process-grid::before {
+    display: none;
+  }
+
+  .country-process-step {
+    padding: 0 25px;
+  }
+}
+
+/* =========================================================
+   MOBILE RESPONSIVE
+   ========================================================= */
+
+@media (max-width: 640px) {
+  :root {
+    --us-container-padding: 18px;
+  }
+
+  .country-hero {
+    min-height: 88vh;
+  }
+
+  .country-hero-overlay {
+    background:
+      linear-gradient(
+        0deg,
+        var(--us-navy-90) 0%,
+        var(--us-navy-70) 60%,
+        rgba(7, 28, 53, 0.35) 100%
+      );
+  }
+
+  .country-hero-content {
+    padding-top: 150px;
+    padding-bottom: 60px;
+  }
+
+  .country-hero-content h1 {
+    font-size: clamp(52px, 17vw, 74px);
+  }
+
+  .country-hero-description {
+    font-size: 16px;
+  }
+
+  .country-hero-actions {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .country-section,
+  .country-highlights,
+  .country-process {
+    padding: var(--us-section-space-mobile) 0;
+  }
+
+  .country-section-heading h2 {
+    font-size: 43px;
+  }
+
+  .country-highlight-grid,
+  .country-course-grid,
+  .country-process-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .country-highlight-card {
+    min-height: 290px;
+  }
+
+  .country-highlight-card h3 {
+    margin-top: 45px;
+  }
+
+  .country-process-grid {
+    gap: 40px;
+  }
+
+  .country-process-step {
+    padding: 0;
+    text-align: left;
+  }
+
+  .country-process-step > span {
+    width: 58px;
+    height: 58px;
+    border-width: 5px;
+  }
+
+  .country-process-step h3 {
+    margin-top: 22px;
+  }
+
+  .country-cta {
+    padding: 70px 0;
+  }
+
+  .country-cta-inner,
+  .country-footer-inner {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+}
