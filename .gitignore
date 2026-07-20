@@ -4,6 +4,7 @@ backend/node_modules/
 
 # Environment files
 .env.local
+.env.php
 .env.development.local
 .env.test.local
 .env.production.local
