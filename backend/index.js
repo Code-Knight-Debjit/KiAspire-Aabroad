@@ -6,7 +6,13 @@ const createDefaultAdmin = require("./utils/defaultAdmin")
 
 const connectDB = require("./config/db");
 const userRoutes = require("./Routes/userRoute");
+<<<<<<< HEAD
 const adminRoutes = require("./Routes/adminRoute")
+=======
+const adminRoutes = require("./Routes/adminRoute");
+const serviceRoutes = require("./Routes/serviceRoute");
+const storyRoutes = require("./Routes/storyRoute");
+>>>>>>> 5e531e4 (full Backend)
 
 const app = express();
 
@@ -25,13 +31,19 @@ app.use(cors());
 
 // Routes
 app.use("/api/user", userRoutes);
+<<<<<<< HEAD
 app.use("/api/admin",adminRoutes)
+=======
+app.use("/api/admin",adminRoutes);
+app.use("/api/services",serviceRoutes);
+app.use("/api/story",storyRoutes);
+>>>>>>> 5e531e4 (full Backend)
 
 app.get("/", (req, res) => {
   res.send("API is running...");
 });
 
-const PORT =  3300;
+const PORT = process.env.PORT || 3300;
 
 app.listen(PORT, () => {
   console.log(` Server running on port ${PORT}`);
