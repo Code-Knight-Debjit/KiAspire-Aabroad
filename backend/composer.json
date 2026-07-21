@@ -1,10 +1,11 @@
 {
     "name": "kiaspire/aabroad-backend",
     "type": "project",
-    "description": "Laravel backend boilerplate for KiAspire Aabroad.",
+    "description": "Laravel backend for KiAspire Aabroad.",
     "require": {
         "php": "^8.2",
-        "laravel/framework": "^12.0"
+        "laravel/framework": "^12.0",
+        "laravel/sanctum": "^4.0"
     },
     "require-dev": {
         "fakerphp/faker": "^1.23",

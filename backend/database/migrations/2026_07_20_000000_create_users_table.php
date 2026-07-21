@@ -12,8 +12,13 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('email')->unique();
-            $table->timestamp('email_verified_at')->nullable();
-            $table->string('password');
+            $table->string('phone')->unique();
+            // Nullable: regular ("user") registrations never set a password —
+            // only admin/counsellor accounts authenticate. Mirrors the Node model.
+            $table->string('password')->nullable();
+            $table->enum('role', ['user', 'admin', 'counsellor'])->default('user');
+            $table->boolean('is_active')->default(true);
+            $table->timestamp('last_login')->nullable();
             $table->rememberToken();
             $table->timestamps();
         });
