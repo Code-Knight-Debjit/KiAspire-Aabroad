@@ -26,10 +26,13 @@ const createUser = async (req, res) => {
       });
     }
 
-    if (!/^[a-zA-Z\s]+$/.test(name)) {
+    // FIX: previously "/^[a-zA-Z\s]+$/" rejected valid names like
+    // "Anne-Marie" or "O'Brien". Now allows letters, spaces, hyphens
+    // and apostrophes.
+    if (!/^[a-zA-Z\s'-]+$/.test(name)) {
       return res.status(400).json({
         success: false,
-        message: "Name can contain only letters and spaces",
+        message: "Name can contain only letters, spaces, hyphens and apostrophes",
       });
     }
 

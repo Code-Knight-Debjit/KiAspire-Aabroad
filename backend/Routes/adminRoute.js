@@ -9,10 +9,7 @@ const {
   deleteUser,
 } = require("../controllers/adminController");
 
-const {
-  protect,
-  adminOnly,
-} = require("../middlewares/authMiddleware");
+const { protect, adminOnly } = require("../middlewares/authMiddleware");
 
 const router = express.Router();
 
@@ -26,18 +23,8 @@ router.get("/users", protect, adminOnly, getAllUsers);
 
 router.get("/users/:id", protect, adminOnly, getUserById);
 
-router.patch(
-  "/users/:id/status",
-  protect,
-  adminOnly,
-  updateUserStatus
-);
+router.patch("/users/:id/status", protect, adminOnly, updateUserStatus);
 
-router.delete(
-  "/users/:id",
-  protect,
-  adminOnly,
-  deleteUser
-);
+router.delete("/users/:id", protect, adminOnly, deleteUser);
 
 module.exports = router;

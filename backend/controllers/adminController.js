@@ -61,7 +61,9 @@ const adminLogin = async (req, res) => {
     admin.lastLogin = new Date();
     await admin.save();
 
-    const token = generateToken(admin._id);
+    // FIX: previously called as generateToken(admin._id) — the role
+    // claim was silently missing from every token. Now passes both.
+    const token = generateToken(admin._id, admin.role);
 
     return res.status(200).json({
       success: true,
@@ -90,6 +92,9 @@ const adminLogin = async (req, res) => {
 // GET /api/admin/profile
 const getAdminProfile = async (req, res) => {
   try {
+    // FIX: password is now select:false on the schema (and stripped again
+    // by the toJSON transform as a second safety net), so this no longer
+    // leaks the password hash to the client.
     const admin = await User.findOne({
       _id: req.user._id,
       role: "admin",

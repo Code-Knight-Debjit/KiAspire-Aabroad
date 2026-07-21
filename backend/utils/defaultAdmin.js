@@ -1,6 +1,5 @@
 const bcrypt = require("bcryptjs");
 const User = require("../models/userModel");
-const generateToken  = require('./token')
 
 const createDefaultAdmin = async () => {
   try {
@@ -10,7 +9,7 @@ const createDefaultAdmin = async () => {
     });
 
     if (existingAdmin) {
-      console.log(" Default admin already exists");
+      console.log("Default admin already exists");
       return;
     }
 
@@ -27,12 +26,11 @@ const createDefaultAdmin = async () => {
       phone: process.env.ADMIN_PHONE,
       password: hashedPassword,
       role: "admin",
-     
     });
 
-    console.log(" Default admin created successfully");
+    console.log("Default admin created successfully");
   } catch (error) {
-    console.error(" Error creating default admin:", error.message);
+    console.error("Error creating default admin:", error.message);
   }
 };
 

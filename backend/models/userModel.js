@@ -4,18 +4,13 @@ const userSchema = new mongoose.Schema(
   {
     name: {
       type: String,
-      required: true, 
+      required: true,
       trim: true,
     },
-    // lastName: {
-    //   type: String,
-    //   required: true, 
-    //   trim: true,
-    // },
 
     email: {
       type: String,
-      required: true, 
+      required: true,
       unique: true,
       lowercase: true,
       trim: true,
@@ -23,14 +18,18 @@ const userSchema = new mongoose.Schema(
 
     phone: {
       type: String,
-      required: true, 
+      required: true,
       unique: true,
       trim: true,
     },
 
+    // FIX: select:false so password hashes are never returned by default.
+    // Anywhere that actually needs it (e.g. admin login) must explicitly
+    // call .select("+password").
     password: {
       type: String,
       minlength: 6,
+      select: false,
     },
 
     role: {
@@ -44,7 +43,6 @@ const userSchema = new mongoose.Schema(
       default: true,
     },
 
-   
     lastLogin: {
       type: Date,
       default: null,
@@ -54,5 +52,14 @@ const userSchema = new mongoose.Schema(
     timestamps: true,
   }
 );
+
+// FIX (defense in depth): even if some future query explicitly selects
+// +password, strip it before the document is ever serialized to JSON.
+userSchema.set("toJSON", {
+  transform: (_doc, ret) => {
+    delete ret.password;
+    return ret;
+  },
+});
 
 module.exports = mongoose.model("User", userSchema);

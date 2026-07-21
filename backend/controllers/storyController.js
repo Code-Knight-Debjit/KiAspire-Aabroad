@@ -1,5 +1,33 @@
 const Story = require("../models/storyModel");
 
+// Fields an admin is allowed to set/update on a story.
+// Prevents accidentally overwriting fields like createdBy via a raw body.
+const ALLOWED_FIELDS = [
+  "studentName",
+  "country",
+  "university",
+  "course",
+  "title",
+  "description",
+  "youtubeUrl",
+  "thumbnail",
+  "isFeatured",
+  "isActive",
+  "sortOrder",
+];
+
+const pickAllowedFields = (body) => {
+  const result = {};
+
+  for (const field of ALLOWED_FIELDS) {
+    if (body[field] !== undefined) {
+      result[field] = body[field];
+    }
+  }
+
+  return result;
+};
+
 // Create Story
 const createStory = async (req, res) => {
   try {
@@ -10,7 +38,11 @@ const createStory = async (req, res) => {
       course,
       title,
       description,
-      youtubeVideoId,
+      // FIX: the schema requires "youtubeUrl", but this controller used
+      // to read "youtubeVideoId" from the body and never set youtubeUrl
+      // at all — every story creation failed schema validation. Now the
+      // controller and schema agree on the same field name.
+      youtubeUrl,
       thumbnail,
       isFeatured,
       sortOrder,
@@ -22,7 +54,7 @@ const createStory = async (req, res) => {
       !university ||
       !course ||
       !title ||
-      !youtubeVideoId
+      !youtubeUrl
     ) {
       return res.status(400).json({
         success: false,
@@ -37,7 +69,7 @@ const createStory = async (req, res) => {
       course,
       title,
       description,
-      youtubeVideoId,
+      youtubeUrl,
       thumbnail,
       isFeatured,
       sortOrder,
@@ -50,7 +82,19 @@ const createStory = async (req, res) => {
       story,
     });
   } catch (error) {
-    console.log(error);
+    console.error("Create story error:", error.message);
+
+    if (error.name === "ValidationError") {
+      const message = Object.values(error.errors)
+        .map((item) => item.message)
+        .join(", ");
+
+      return res.status(400).json({
+        success: false,
+        message,
+      });
+    }
+
     res.status(500).json({
       success: false,
       message: "Server Error",
@@ -94,6 +138,13 @@ const getStoryById = async (req, res) => {
       story,
     });
   } catch (error) {
+    if (error.name === "CastError") {
+      return res.status(400).json({
+        success: false,
+        message: "Invalid story ID",
+      });
+    }
+
     res.status(500).json({
       success: false,
       message: "Server Error",
@@ -104,9 +155,14 @@ const getStoryById = async (req, res) => {
 // Update Story
 const updateStory = async (req, res) => {
   try {
+    // FIX: previously passed req.body straight through to
+    // findByIdAndUpdate, which would let a caller set arbitrary fields
+    // (e.g. createdBy). Now only whitelisted fields are applied.
+    const updateData = pickAllowedFields(req.body);
+
     const story = await Story.findByIdAndUpdate(
       req.params.id,
-      req.body,
+      updateData,
       {
         new: true,
         runValidators: true,
@@ -126,6 +182,24 @@ const updateStory = async (req, res) => {
       story,
     });
   } catch (error) {
+    if (error.name === "CastError") {
+      return res.status(400).json({
+        success: false,
+        message: "Invalid story ID",
+      });
+    }
+
+    if (error.name === "ValidationError") {
+      const message = Object.values(error.errors)
+        .map((item) => item.message)
+        .join(", ");
+
+      return res.status(400).json({
+        success: false,
+        message,
+      });
+    }
+
     res.status(500).json({
       success: false,
       message: "Server Error",
@@ -150,6 +224,13 @@ const deleteStory = async (req, res) => {
       message: "Story deleted successfully",
     });
   } catch (error) {
+    if (error.name === "CastError") {
+      return res.status(400).json({
+        success: false,
+        message: "Invalid story ID",
+      });
+    }
+
     res.status(500).json({
       success: false,
       message: "Server Error",

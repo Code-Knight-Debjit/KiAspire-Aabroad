@@ -145,8 +145,20 @@ const updateService = async (req, res) => {
       updateData.isActive = isActive;
     }
 
+    // FIX: previously "Number(sortOrder)" with no validation could write
+    // NaN into the document if a non-numeric value was sent. Now it's
+    // validated before being included in the update.
     if (sortOrder !== undefined) {
-      updateData.sortOrder = Number(sortOrder);
+      const parsedSortOrder = Number(sortOrder);
+
+      if (!Number.isFinite(parsedSortOrder) || parsedSortOrder < 0) {
+        return res.status(400).json({
+          success: false,
+          message: "sortOrder must be a non-negative number",
+        });
+      }
+
+      updateData.sortOrder = parsedSortOrder;
     }
 
     const service = await Service.findByIdAndUpdate(
