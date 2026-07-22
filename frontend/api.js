@@ -98,7 +98,7 @@
       console.error('API network error:', networkError);
 
       const error = new Error(
-        'Could not reach the server. Make sure the backend is running on port 3000.'
+        `Could not reach ${requestUrl}`
       );
 
       error.status = 0;
