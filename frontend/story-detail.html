@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Student Story — Ki Aspire Abroad</title>
+<meta name="description" content="A student story from Ki Aspire Abroad.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,300;0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400;1,6..72,500&family=Archivo:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="grain"></div>
+<div class="progress-bar" id="progressBar"></div>
+
+<nav class="nav" id="nav">
+  <a class="nav-mark" href="index.html" aria-label="Ki Aspire Abroad — home">
+    <span class="nav-mark-text"><img src="Logo.webp" alt="Logo" class="mark-icon"></span>
+  </a>
+  <div class="nav-links">
+    <a href="about.html">About</a>
+    <a href="services.html">Services</a>
+    <a href="index.html#destinations">Destinations</a>
+    <a href="stories.html">Stories</a>
+    <a href="register.html">Get Started</a>
+  </div>
+  <div class="nav-cta">
+    <a href="register.html" class="btn btn-dark">Book a Consultation</a>
+    <button class="nav-toggle" id="navToggle" aria-label="Open menu" aria-expanded="false" aria-controls="mobileMenu">
+      <span></span><span></span>
+    </button>
+  </div>
+</nav>
+
+<div class="mobile-menu" id="mobileMenu">
+  <a href="about.html">About</a>
+  <a href="services.html">Services</a>
+  <a href="index.html#destinations">Destinations</a>
+  <a href="stories.html">Stories</a>
+  <a href="register.html" class="mobile-menu-cta">Get Started</a>
+</div>
+
+<header class="page-hero">
+  <div class="container">
+    <a href="stories.html" class="hero-breadcrumb reveal is-visible" style="color:rgba(46,42,34,0.62);"><span class="hero-breadcrumb-arrow" aria-hidden="true">←</span> All Stories</a>
+    <p class="eyebrow eyebrow--light reveal is-visible" id="storyEyebrow" style="--d:0">Success Story</p>
+    <h1 class="page-hero-title reveal is-visible" id="storyTitle" style="--d:1">Loading story…</h1>
+    <div class="story-detail-meta" id="storyMeta"></div>
+  </div>
+</header>
+
+<section class="section" id="storyBody">
+  <div class="container">
+    <div id="storyVideoWrap"></div>
+    <div class="story-content" id="storyContent">
+      <p>Loading…</p>
+    </div>
+  </div>
+</section>
+
+<section class="section section--pine cta-band" id="contact">
+  <div class="container cta-grid">
+    <div>
+      <p class="eyebrow eyebrow--light reveal" style="--d:0">Start Here</p>
+      <h2 class="display cta-title reveal" style="--d:1">Your story could be next.</h2>
+      <p class="cta-copy reveal" style="--d:2">Thirty minutes, no obligation. Let's find out what your version of this looks like.</p>
+    </div>
+    <div class="cta-actions reveal" style="--d:3">
+      <a href="register.html" class="btn btn-light">Book a Private Consultation</a>
+      <div class="cta-contact">
+        <span>hello@kiaspireabroad.com</span>
+        <span>+91 80 4567 1234</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer class="footer">
+  <div class="container footer-grid">
+    <div class="footer-brand">
+      <div class="nav-mark footer-mark">
+        <span class="nav-mark-text"><img src="Logo.webp" alt="Logo" class="mark-icon"></span>
+      </div>
+      <p class="footer-tagline">Independent study abroad counselling headquartered in Kolkata, working with students across India.</p>
+      <p class="footer-dpa">Dream <span>·</span> Plan <span>·</span> Achieve</p>
+    </div>
+    <div class="footer-col">
+      <p class="footer-heading">Explore</p>
+      <a href="about.html">About</a>
+      <a href="services.html">Services</a>
+      <a href="index.html#destinations">Destinations</a>
+      <a href="stories.html">Stories</a>
+    </div>
+    <div class="footer-col">
+      <p class="footer-heading">Contact</p>
+      <a href="mailto:hello@kiaspireabroad.com">hello@kiaspireabroad.com</a>
+      <a href="tel:+918981572430">+91 89815 72430</a>
+      <span>Kolkata, India</span>
+    </div>
+    <div class="footer-col">
+      <p class="footer-heading">Follow</p>
+      <a href="#">Instagram</a>
+      <a href="#">LinkedIn</a>
+    </div>
+  </div>
+  <div class="container footer-bottom">
+    <span>© <span id="year"></span> Ki Aspire Abroad. All rights reserved.</span>
+    <span>Designed for ambitious students.</span>
+  </div>
+</footer>
+
+<script src="api.js"></script>
+<script src="script.js" defer></script>
+<script>
+(function(){
+  function escapeHtml(str){
+    var div = document.createElement('div');
+    div.textContent = str == null ? '' : String(str);
+    return div.innerHTML;
+  }
+
+  function youtubeEmbedUrl(url){
+    if(!url) return null;
+    var id = null;
+    var patterns = [
+      /(?:youtube\.com\/watch\?v=)([\w-]{6,})/,
+      /(?:youtu\.be\/)([\w-]{6,})/,
+      /(?:youtube\.com\/embed\/)([\w-]{6,})/
+    ];
+    for(var i = 0; i < patterns.length; i++){
+      var m = url.match(patterns[i]);
+      if(m){ id = m[1]; break; }
+    }
+    return id ? ('https://www.youtube.com/embed/' + id) : null;
+  }
+
+  var params = new URLSearchParams(window.location.search);
+  var id = params.get('id');
+
+  var titleEl = document.getElementById('storyTitle');
+  var eyebrowEl = document.getElementById('storyEyebrow');
+  var metaEl = document.getElementById('storyMeta');
+  var videoWrap = document.getElementById('storyVideoWrap');
+  var contentEl = document.getElementById('storyContent');
+
+  function showNotFound(message){
+    titleEl.textContent = 'Story not found';
+    eyebrowEl.textContent = 'Success Story';
+    metaEl.innerHTML = '';
+    videoWrap.innerHTML = '';
+    contentEl.innerHTML = '<p>' + escapeHtml(message || "We couldn't find that story. It may have been moved or removed.") + ' <a href="stories.html" style="color:var(--brass-deep); font-weight:600;">Browse all stories \u2192</a></p>';
+  }
+
+  function metaField(label, value){
+    if(!value) return '';
+    return '<div><strong>' + escapeHtml(label) + '</strong><span>' + escapeHtml(value) + '</span></div>';
+  }
+
+  function renderStory(story){
+    document.title = (story.studentName || 'Student Story') + ' \u2014 Ki Aspire Abroad';
+    eyebrowEl.textContent = 'Success Story';
+    titleEl.innerHTML = escapeHtml(story.studentName || 'A Ki Aspire Abroad Student') +
+      (story.university ? ' <em>\u2014 now at ' + escapeHtml(story.university) + '</em>' : '');
+
+    metaEl.innerHTML =
+      metaField('Country', story.country) +
+      metaField('University', story.university) +
+      metaField('Course', story.course);
+
+    if(story.youtubeUrl){
+      var embed = youtubeEmbedUrl(story.youtubeUrl);
+      videoWrap.innerHTML = embed
+        ? '<div class="story-video"><iframe src="' + embed + '" title="' + escapeHtml(story.studentName || 'Student story video') + '" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen loading="lazy"></iframe></div>'
+        : '';
+    }
+
+    var bodyText = story.content || story.quote || '';
+    contentEl.innerHTML = bodyText
+      ? bodyText.split(/\n+/).filter(Boolean).map(function(p){ return '<p>' + escapeHtml(p) + '</p>'; }).join('')
+      : '<p>No written story available for this student yet — watch the video above for the full account.</p>';
+  }
+
+  if(!id){
+    showNotFound('No story was specified.');
+  } else if(window.KiAspireAPI){
+    window.KiAspireAPI.getStory(id)
+      .then(renderStory)
+      .catch(function(err){
+        console.error('getStory failed:', err);
+        showNotFound(err && err.status === 404 ? null : "Something went wrong loading this story.");
+      });
+  } else {
+    showNotFound("Something went wrong loading this story.");
+  }
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Manage Users — Ki Aspire Abroad Admin</title>
+<meta name="robots" content="noindex, nofollow">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,300;0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400;1,6..72,500&family=Archivo:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../style.css">
+</head>
+<body class="admin-body">
+
+<div class="admin-mobile-bar">
+  <img src="../Logo.webp" alt="Ki Aspire Abroad">
+  <button class="admin-mobile-toggle" id="adminMobileToggle" aria-label="Open menu">☰</button>
+</div>
+<div class="admin-sidebar-scrim" id="adminSidebarScrim"></div>
+
+<div class="admin-shell">
+  <aside class="admin-sidebar" id="adminSidebar">
+    <div class="admin-sidebar-logo"><img src="../Logo.webp" alt="Ki Aspire Abroad" style="width:100%; height:auto;"></div>
+    <p class="admin-sidebar-tag">Admin Panel</p>
+    <nav class="admin-nav">
+      <a href="dashboard.html"><span class="admin-nav-icon">◆</span> Dashboard</a>
+      <a href="users.html" class="is-active"><span class="admin-nav-icon">◆</span> Manage Users</a>
+      <a href="services.html"><span class="admin-nav-icon">◆</span> Manage Services</a>
+      <a href="stories.html"><span class="admin-nav-icon">◆</span> Manage Stories</a>
+      <a href="profile.html"><span class="admin-nav-icon">◆</span> My Profile</a>
+    </nav>
+    <div class="admin-sidebar-footer">
+      <div class="admin-sidebar-admin"><strong id="sidebarAdminName">Admin</strong>Signed in</div>
+      <button class="admin-logout-btn" type="button" data-admin-logout>Log Out</button>
+    </div>
+  </aside>
+
+  <main class="admin-main">
+    <div class="admin-topbar">
+      <div>
+        <p class="eyebrow admin-eyebrow">Leads</p>
+        <h1 class="admin-title">Manage Users</h1>
+      </div>
+      
+    </div>
+
+    
+    <div class="admin-card">
+      <div class="table-toolbar">
+        <div class="table-search"><input type="text" id="userSearch" placeholder="Search by name or email…"></div>
+      </div>
+      <div class="table-scroll">
+        <table class="admin-table">
+          <thead><tr><th>Name</th><th>Email</th><th>Phone</th><th>Status</th><th>Registered</th><th>Actions</th></tr></thead>
+          <tbody id="usersBody">
+            <tr><td colspan="6" class="cell-muted">Loading…</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+
+
+<script src="../api.js"></script>
+<script src="admin.js"></script>
+<script>
+
+  function escapeHtml(str){
+    var div = document.createElement('div');
+    div.textContent = str == null ? '' : String(str);
+    return div.innerHTML;
+  }
+  function formatDate(iso){
+    if(!iso) return '—';
+    var d = new Date(iso);
+    if(isNaN(d.getTime())) return String(iso);
+    return d.toLocaleDateString('en-IN', { day:'numeric', month:'short', year:'numeric' });
+  }
+
+  var allUsers = [];
+  var tbody = document.getElementById('usersBody');
+
+  function rowHtml(u){
+    return '<tr data-row-id="' + escapeHtml(u.id) + '">' +
+      '<td class="cell-primary"><a href="user-detail.html?id=' + encodeURIComponent(u.id) + '" style="color:inherit;">' + escapeHtml(u.name) + '</a></td>' +
+      '<td class="cell-muted">' + escapeHtml(u.email) + '</td>' +
+      '<td class="cell-muted">' + escapeHtml(u.phone) + '</td>' +
+      '<td><button type="button" class="status-badge is-' + (u.status === 'active' ? 'active' : 'inactive') + '" data-toggle-status="' + escapeHtml(u.id) + '" data-current-status="' + escapeHtml(u.status || 'inactive') + '">' + escapeHtml(u.status || 'inactive') + '</button></td>' +
+      '<td class="cell-muted">' + formatDate(u.createdAt) + '</td>' +
+      '<td class="cell-actions">' +
+        '<a class="table-action" href="user-detail.html?id=' + encodeURIComponent(u.id) + '">View</a>' +
+        '<button type="button" class="table-action is-danger" data-delete-user="' + escapeHtml(u.id) + '">Delete</button>' +
+      '</td>' +
+    '</tr>';
+  }
+
+  function render(list){
+    if(!list.length){
+      tbody.innerHTML = '<tr><td colspan="6"><div class="empty-state"><p class="empty-state-title">No users found</p><p>Registrations will appear here as they come in.</p></div></td></tr>';
+      return;
+    }
+    tbody.innerHTML = list.map(rowHtml).join('');
+  }
+
+  function load(){
+    window.KiAspireAPI.getAdminUsers()
+      .then(function(users){
+        allUsers = users || [];
+        render(allUsers);
+      })
+      .catch(function(err){
+        console.error('getAdminUsers failed:', err);
+        tbody.innerHTML = '<tr><td colspan="6"><div class="empty-state"><p class="empty-state-title">Couldn\'t load users</p><p>Please refresh the page.</p></div></td></tr>';
+      });
+  }
+
+  document.getElementById('userSearch').addEventListener('input', function(e){
+    var q = e.target.value.trim().toLowerCase();
+    var filtered = !q ? allUsers : allUsers.filter(function(u){
+      return (u.name || '').toLowerCase().indexOf(q) > -1 || (u.email || '').toLowerCase().indexOf(q) > -1;
+    });
+    render(filtered);
+  });
+
+  tbody.addEventListener('click', function(e){
+    var toggleBtn = e.target.closest('[data-toggle-status]');
+    if(toggleBtn){
+      var id = toggleBtn.getAttribute('data-toggle-status');
+      var current = toggleBtn.getAttribute('data-current-status');
+      var next = current === 'active' ? 'inactive' : 'active';
+      if(!confirm('Mark this user as ' + next + '?')) return;
+      toggleBtn.disabled = true;
+      window.KiAspireAPI.setAdminUserStatus(id, next)
+        .then(function(){ load(); })
+        .catch(function(err){
+          console.error('setAdminUserStatus failed:', err);
+          alert('Could not update status. Please try again.');
+          toggleBtn.disabled = false;
+        });
+      return;
+    }
+    var deleteBtn = e.target.closest('[data-delete-user]');
+    if(deleteBtn){
+      var delId = deleteBtn.getAttribute('data-delete-user');
+      if(!confirm('Delete this user permanently? This cannot be undone.')) return;
+      deleteBtn.disabled = true;
+      window.KiAspireAPI.deleteAdminUser(delId)
+        .then(function(){ load(); })
+        .catch(function(err){
+          console.error('deleteAdminUser failed:', err);
+          alert('Could not delete this user. Please try again.');
+          deleteBtn.disabled = false;
+        });
+    }
+  });
+
+  load();
+
+</script>
+</body>
+</html>
