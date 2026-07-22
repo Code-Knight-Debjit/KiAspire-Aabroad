@@ -20,7 +20,16 @@ connectDB().then(async () => {
 
 // Middleware
 app.use(express.json());
-app.use(cors());
+app.use(
+  cors({
+    origin: [
+      "http://127.0.0.1:5500",
+      "http://localhost:300"
+    ],
+    methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization"]
+  })
+);
 
 // Routes
 app.use("/api/user", userRoutes);
@@ -32,7 +41,7 @@ app.get("/", (req, res) => {
   res.send("API is running...");
 });
 
-const PORT = process.env.PORT || 3300;
+const PORT =  3300;
 
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);

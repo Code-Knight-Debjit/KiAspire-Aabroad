@@ -1,164 +1,673 @@
+```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Manage Users — Ki Aspire Abroad Admin</title>
-<meta name="robots" content="noindex, nofollow">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,300;0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400;1,6..72,500&family=Archivo:wght@400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="../style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Manage Users — Ki Aspire Abroad Admin</title>
+
+  <meta name="robots" content="noindex, nofollow">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+  <link
+    href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,300;0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400;1,6..72,500&family=Archivo:wght@400;500;600;700&display=swap"
+    rel="stylesheet"
+  >
+
+  <link rel="stylesheet" href="../style.css">
 </head>
+
 <body class="admin-body">
 
-<div class="admin-mobile-bar">
-  <img src="../Logo.webp" alt="Ki Aspire Abroad">
-  <button class="admin-mobile-toggle" id="adminMobileToggle" aria-label="Open menu">☰</button>
-</div>
-<div class="admin-sidebar-scrim" id="adminSidebarScrim"></div>
+  <!-- Mobile admin bar -->
+  <div class="admin-mobile-bar">
+    <img src="../Logo.webp" alt="Ki Aspire Abroad">
 
-<div class="admin-shell">
-  <aside class="admin-sidebar" id="adminSidebar">
-    <div class="admin-sidebar-logo"><img src="../Logo.webp" alt="Ki Aspire Abroad" style="width:100%; height:auto;"></div>
-    <p class="admin-sidebar-tag">Admin Panel</p>
-    <nav class="admin-nav">
-      <a href="dashboard.html"><span class="admin-nav-icon">◆</span> Dashboard</a>
-      <a href="users.html" class="is-active"><span class="admin-nav-icon">◆</span> Manage Users</a>
-      <a href="services.html"><span class="admin-nav-icon">◆</span> Manage Services</a>
-      <a href="stories.html"><span class="admin-nav-icon">◆</span> Manage Stories</a>
-      <a href="profile.html"><span class="admin-nav-icon">◆</span> My Profile</a>
-    </nav>
-    <div class="admin-sidebar-footer">
-      <div class="admin-sidebar-admin"><strong id="sidebarAdminName">Admin</strong>Signed in</div>
-      <button class="admin-logout-btn" type="button" data-admin-logout>Log Out</button>
-    </div>
-  </aside>
+    <button
+      class="admin-mobile-toggle"
+      id="adminMobileToggle"
+      type="button"
+      aria-label="Open menu"
+    >
+      ☰
+    </button>
+  </div>
 
-  <main class="admin-main">
-    <div class="admin-topbar">
-      <div>
-        <p class="eyebrow admin-eyebrow">Leads</p>
-        <h1 class="admin-title">Manage Users</h1>
+  <div
+    class="admin-sidebar-scrim"
+    id="adminSidebarScrim"
+  ></div>
+
+  <div class="admin-shell">
+
+    <!-- Sidebar -->
+    <aside
+      class="admin-sidebar"
+      id="adminSidebar"
+    >
+      <div class="admin-sidebar-logo">
+        <img
+          src="../Logo.webp"
+          alt="Ki Aspire Abroad"
+          style="width: 100%; height: auto;"
+        >
       </div>
-      
-    </div>
 
-    
-    <div class="admin-card">
-      <div class="table-toolbar">
-        <div class="table-search"><input type="text" id="userSearch" placeholder="Search by name or email…"></div>
+      <p class="admin-sidebar-tag">
+        Admin Panel
+      </p>
+
+      <nav class="admin-nav">
+        <a href="dashboard.html">
+          <span class="admin-nav-icon">◆</span>
+          Dashboard
+        </a>
+
+        <a
+          href="users.html"
+          class="is-active"
+        >
+          <span class="admin-nav-icon">◆</span>
+          Manage Users
+        </a>
+
+        <a href="services.html">
+          <span class="admin-nav-icon">◆</span>
+          Manage Services
+        </a>
+
+        <a href="stories.html">
+          <span class="admin-nav-icon">◆</span>
+          Manage Stories
+        </a>
+
+        <a href="profile.html">
+          <span class="admin-nav-icon">◆</span>
+          My Profile
+        </a>
+      </nav>
+
+      <div class="admin-sidebar-footer">
+        <div class="admin-sidebar-admin">
+          <strong id="sidebarAdminName">
+            Admin
+          </strong>
+
+          Signed in
+        </div>
+
+        <button
+          class="admin-logout-btn"
+          type="button"
+          data-admin-logout
+        >
+          Log Out
+        </button>
       </div>
-      <div class="table-scroll">
-        <table class="admin-table">
-          <thead><tr><th>Name</th><th>Email</th><th>Phone</th><th>Status</th><th>Registered</th><th>Actions</th></tr></thead>
-          <tbody id="usersBody">
-            <tr><td colspan="6" class="cell-muted">Loading…</td></tr>
-          </tbody>
-        </table>
+    </aside>
+
+    <!-- Main content -->
+    <main class="admin-main">
+
+      <div class="admin-topbar">
+        <div>
+          <p class="eyebrow admin-eyebrow">
+            Leads
+          </p>
+
+          <h1 class="admin-title">
+            Manage Users
+          </h1>
+        </div>
       </div>
-    </div>
 
-  </main>
-</div>
+      <div class="admin-card">
 
+        <div class="table-toolbar">
+          <div class="table-search">
+            <input
+              type="text"
+              id="userSearch"
+              placeholder="Search by name, email or phone…"
+              autocomplete="off"
+            >
+          </div>
+        </div>
 
+        <div class="table-scroll">
+          <table class="admin-table">
 
-<script src="../api.js"></script>
-<script src="admin.js"></script>
-<script>
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Phone</th>
+                <th>Status</th>
+                <th>Registered</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
 
-  function escapeHtml(str){
-    var div = document.createElement('div');
-    div.textContent = str == null ? '' : String(str);
-    return div.innerHTML;
-  }
-  function formatDate(iso){
-    if(!iso) return '—';
-    var d = new Date(iso);
-    if(isNaN(d.getTime())) return String(iso);
-    return d.toLocaleDateString('en-IN', { day:'numeric', month:'short', year:'numeric' });
-  }
+            <tbody id="usersBody">
+              <tr>
+                <td
+                  colspan="6"
+                  class="cell-muted"
+                >
+                  Loading…
+                </td>
+              </tr>
+            </tbody>
 
-  var allUsers = [];
-  var tbody = document.getElementById('usersBody');
+          </table>
+        </div>
+      </div>
 
-  function rowHtml(u){
-    return '<tr data-row-id="' + escapeHtml(u.id) + '">' +
-      '<td class="cell-primary"><a href="user-detail.html?id=' + encodeURIComponent(u.id) + '" style="color:inherit;">' + escapeHtml(u.name) + '</a></td>' +
-      '<td class="cell-muted">' + escapeHtml(u.email) + '</td>' +
-      '<td class="cell-muted">' + escapeHtml(u.phone) + '</td>' +
-      '<td><button type="button" class="status-badge is-' + (u.status === 'active' ? 'active' : 'inactive') + '" data-toggle-status="' + escapeHtml(u.id) + '" data-current-status="' + escapeHtml(u.status || 'inactive') + '">' + escapeHtml(u.status || 'inactive') + '</button></td>' +
-      '<td class="cell-muted">' + formatDate(u.createdAt) + '</td>' +
-      '<td class="cell-actions">' +
-        '<a class="table-action" href="user-detail.html?id=' + encodeURIComponent(u.id) + '">View</a>' +
-        '<button type="button" class="table-action is-danger" data-delete-user="' + escapeHtml(u.id) + '">Delete</button>' +
-      '</td>' +
-    '</tr>';
-  }
+    </main>
+  </div>
 
-  function render(list){
-    if(!list.length){
-      tbody.innerHTML = '<tr><td colspan="6"><div class="empty-state"><p class="empty-state-title">No users found</p><p>Registrations will appear here as they come in.</p></div></td></tr>';
-      return;
+  <script src="../api.js"></script>
+  <script src="admin.js"></script>
+
+  <script>
+    'use strict';
+
+    var allUsers = [];
+
+    var tbody =
+      document.getElementById('usersBody');
+
+    var searchInput =
+      document.getElementById('userSearch');
+
+    /* ---------------------------------
+       Escape unsafe HTML
+    --------------------------------- */
+
+    function escapeHtml(value) {
+      var div = document.createElement('div');
+
+      div.textContent =
+        value == null ? '' : String(value);
+
+      return div.innerHTML;
     }
-    tbody.innerHTML = list.map(rowHtml).join('');
-  }
 
-  function load(){
-    window.KiAspireAPI.getAdminUsers()
-      .then(function(users){
-        allUsers = users || [];
+    /* ---------------------------------
+       Format registration date
+    --------------------------------- */
+
+    function formatDate(value) {
+      if (!value) {
+        return '—';
+      }
+
+      var date = new Date(value);
+
+      if (isNaN(date.getTime())) {
+        return escapeHtml(value);
+      }
+
+      return date.toLocaleDateString(
+        'en-IN',
+        {
+          day: 'numeric',
+          month: 'short',
+          year: 'numeric'
+        }
+      );
+    }
+
+    /* ---------------------------------
+       Get MongoDB user ID
+    --------------------------------- */
+
+    function getUserId(user) {
+      if (!user) {
+        return '';
+      }
+
+      return user._id || user.id || '';
+    }
+
+    /* ---------------------------------
+       Get user active status
+    --------------------------------- */
+
+    function getUserStatus(user) {
+      return user && user.isActive === true;
+    }
+
+    /* ---------------------------------
+       Build user row
+    --------------------------------- */
+
+    function rowHtml(user) {
+      var userId = getUserId(user);
+
+      var isActive = getUserStatus(user);
+
+      var statusText =
+        isActive ? 'Active' : 'Inactive';
+
+      var statusClass =
+        isActive ? 'active' : 'inactive';
+
+      var safeId =
+        escapeHtml(userId);
+
+      var encodedId =
+        encodeURIComponent(userId);
+
+      return (
+        '<tr data-row-id="' +
+        safeId +
+        '">' +
+
+          '<td class="cell-primary">' +
+            '<a ' +
+              'href="user-detail.html?id=' +
+              encodedId +
+              '" ' +
+              'style="color: inherit;"' +
+            '>' +
+              escapeHtml(user.name || 'Unnamed user') +
+            '</a>' +
+          '</td>' +
+
+          '<td class="cell-muted">' +
+            escapeHtml(user.email || '—') +
+          '</td>' +
+
+          '<td class="cell-muted">' +
+            escapeHtml(user.phone || '—') +
+          '</td>' +
+
+          '<td>' +
+            '<button ' +
+              'type="button" ' +
+              'class="status-badge is-' +
+              statusClass +
+              '" ' +
+              'data-toggle-status="' +
+              safeId +
+              '" ' +
+              'data-current-active="' +
+              String(isActive) +
+              '"' +
+            '>' +
+              statusText +
+            '</button>' +
+          '</td>' +
+
+          '<td class="cell-muted">' +
+            formatDate(user.createdAt) +
+          '</td>' +
+
+          '<td class="cell-actions">' +
+
+            '<a ' +
+              'class="table-action" ' +
+              'href="user-detail.html?id=' +
+              encodedId +
+              '"' +
+            '>' +
+              'View' +
+            '</a>' +
+
+            '<button ' +
+              'type="button" ' +
+              'class="table-action is-danger" ' +
+              'data-delete-user="' +
+              safeId +
+              '"' +
+            '>' +
+              'Delete' +
+            '</button>' +
+
+          '</td>' +
+
+        '</tr>'
+      );
+    }
+
+    /* ---------------------------------
+       Render user list
+    --------------------------------- */
+
+    function render(users) {
+      if (!Array.isArray(users)) {
+        console.error(
+          'render expected an array:',
+          users
+        );
+
+        tbody.innerHTML =
+          '<tr>' +
+            '<td colspan="6">' +
+              '<div class="empty-state">' +
+                '<p class="empty-state-title">' +
+                  'Invalid users response' +
+                '</p>' +
+                '<p>' +
+                  'The server did not return a valid users list.' +
+                '</p>' +
+              '</div>' +
+            '</td>' +
+          '</tr>';
+
+        return;
+      }
+
+      if (users.length === 0) {
+        tbody.innerHTML =
+          '<tr>' +
+            '<td colspan="6">' +
+              '<div class="empty-state">' +
+                '<p class="empty-state-title">' +
+                  'No users found' +
+                '</p>' +
+                '<p>' +
+                  'Registrations will appear here as they come in.' +
+                '</p>' +
+              '</div>' +
+            '</td>' +
+          '</tr>';
+
+        return;
+      }
+
+      tbody.innerHTML =
+        users.map(rowHtml).join('');
+    }
+
+    /* ---------------------------------
+       Load users from backend
+    --------------------------------- */
+
+    async function loadUsers() {
+      tbody.innerHTML =
+        '<tr>' +
+          '<td colspan="6" class="cell-muted">' +
+            'Loading users…' +
+          '</td>' +
+        '</tr>';
+
+      try {
+        var response =
+          await window.KiAspireAPI.getAdminUsers();
+
+        console.log(
+          'getAdminUsers response:',
+          response
+        );
+
+        /*
+          Supports both API styles:
+
+          1. getAdminUsers() returns array directly
+          2. getAdminUsers() returns:
+             { success, count, users }
+        */
+
+        var users;
+
+        if (Array.isArray(response)) {
+          users = response;
+        } else if (
+          response &&
+          Array.isArray(response.users)
+        ) {
+          users = response.users;
+        } else if (
+          response &&
+          Array.isArray(response.data)
+        ) {
+          users = response.data;
+        } else {
+          users = [];
+        }
+
+        allUsers = users;
+
         render(allUsers);
-      })
-      .catch(function(err){
-        console.error('getAdminUsers failed:', err);
-        tbody.innerHTML = '<tr><td colspan="6"><div class="empty-state"><p class="empty-state-title">Couldn\'t load users</p><p>Please refresh the page.</p></div></td></tr>';
-      });
-  }
+      } catch (error) {
+        console.error(
+          'getAdminUsers failed:',
+          error
+        );
 
-  document.getElementById('userSearch').addEventListener('input', function(e){
-    var q = e.target.value.trim().toLowerCase();
-    var filtered = !q ? allUsers : allUsers.filter(function(u){
-      return (u.name || '').toLowerCase().indexOf(q) > -1 || (u.email || '').toLowerCase().indexOf(q) > -1;
-    });
-    render(filtered);
-  });
+        var message =
+          error && error.message
+            ? error.message
+            : 'Please refresh the page.';
 
-  tbody.addEventListener('click', function(e){
-    var toggleBtn = e.target.closest('[data-toggle-status]');
-    if(toggleBtn){
-      var id = toggleBtn.getAttribute('data-toggle-status');
-      var current = toggleBtn.getAttribute('data-current-status');
-      var next = current === 'active' ? 'inactive' : 'active';
-      if(!confirm('Mark this user as ' + next + '?')) return;
-      toggleBtn.disabled = true;
-      window.KiAspireAPI.setAdminUserStatus(id, next)
-        .then(function(){ load(); })
-        .catch(function(err){
-          console.error('setAdminUserStatus failed:', err);
-          alert('Could not update status. Please try again.');
-          toggleBtn.disabled = false;
-        });
-      return;
+        tbody.innerHTML =
+          '<tr>' +
+            '<td colspan="6">' +
+              '<div class="empty-state">' +
+                '<p class="empty-state-title">' +
+                  'Couldn\'t load users' +
+                '</p>' +
+                '<p>' +
+                  escapeHtml(message) +
+                '</p>' +
+              '</div>' +
+            '</td>' +
+          '</tr>';
+      }
     }
-    var deleteBtn = e.target.closest('[data-delete-user]');
-    if(deleteBtn){
-      var delId = deleteBtn.getAttribute('data-delete-user');
-      if(!confirm('Delete this user permanently? This cannot be undone.')) return;
-      deleteBtn.disabled = true;
-      window.KiAspireAPI.deleteAdminUser(delId)
-        .then(function(){ load(); })
-        .catch(function(err){
-          console.error('deleteAdminUser failed:', err);
-          alert('Could not delete this user. Please try again.');
-          deleteBtn.disabled = false;
-        });
-    }
-  });
 
-  load();
+    /* ---------------------------------
+       Search users
+    --------------------------------- */
 
-</script>
+    searchInput.addEventListener(
+      'input',
+      function (event) {
+        var query =
+          event.target.value
+            .trim()
+            .toLowerCase();
+
+        if (!query) {
+          render(allUsers);
+          return;
+        }
+
+        var filteredUsers =
+          allUsers.filter(function (user) {
+            var name =
+              String(user.name || '')
+                .toLowerCase();
+
+            var email =
+              String(user.email || '')
+                .toLowerCase();
+
+            var phone =
+              String(user.phone || '')
+                .toLowerCase();
+
+            return (
+              name.indexOf(query) > -1 ||
+              email.indexOf(query) > -1 ||
+              phone.indexOf(query) > -1
+            );
+          });
+
+        render(filteredUsers);
+      }
+    );
+
+    /* ---------------------------------
+       Status and delete actions
+    --------------------------------- */
+
+    tbody.addEventListener(
+      'click',
+      async function (event) {
+
+        /*
+          Activate/deactivate user
+        */
+
+        var toggleButton =
+          event.target.closest(
+            '[data-toggle-status]'
+          );
+
+        if (toggleButton) {
+          var userId =
+            toggleButton.getAttribute(
+              'data-toggle-status'
+            );
+
+          var currentActive =
+            toggleButton.getAttribute(
+              'data-current-active'
+            ) === 'true';
+
+          var nextActive =
+            !currentActive;
+
+          var nextStatusText =
+            nextActive ? 'active' : 'inactive';
+
+          if (!userId) {
+            console.error(
+              'Status update failed: missing user ID'
+            );
+
+            alert(
+              'User ID is missing. Refresh the page and try again.'
+            );
+
+            return;
+          }
+
+          var confirmed =
+            confirm(
+              'Mark this user as ' +
+              nextStatusText +
+              '?'
+            );
+
+          if (!confirmed) {
+            return;
+          }
+
+          toggleButton.disabled = true;
+
+          try {
+            await window.KiAspireAPI
+              .setAdminUserStatus(
+                userId,
+                nextActive
+              );
+
+            await loadUsers();
+          } catch (error) {
+            console.error(
+              'setAdminUserStatus failed:',
+              error
+            );
+
+            alert(
+              error && error.message
+                ? error.message
+                : 'Could not update status. Please try again.'
+            );
+
+            toggleButton.disabled = false;
+          }
+
+          return;
+        }
+
+        /*
+          Delete user
+        */
+
+        var deleteButton =
+          event.target.closest(
+            '[data-delete-user]'
+          );
+
+        if (deleteButton) {
+          var deleteUserId =
+            deleteButton.getAttribute(
+              'data-delete-user'
+            );
+
+          if (!deleteUserId) {
+            console.error(
+              'Delete failed: missing user ID'
+            );
+
+            alert(
+              'User ID is missing. Refresh the page and try again.'
+            );
+
+            return;
+          }
+
+          var deleteConfirmed =
+            confirm(
+              'Delete this user permanently? This action cannot be undone.'
+            );
+
+          if (!deleteConfirmed) {
+            return;
+          }
+
+          deleteButton.disabled = true;
+
+          try {
+            await window.KiAspireAPI
+              .deleteAdminUser(
+                deleteUserId
+              );
+
+            allUsers =
+              allUsers.filter(
+                function (user) {
+                  return (
+                    getUserId(user) !==
+                    deleteUserId
+                  );
+                }
+              );
+
+            render(allUsers);
+          } catch (error) {
+            console.error(
+              'deleteAdminUser failed:',
+              error
+            );
+
+            alert(
+              error && error.message
+                ? error.message
+                : 'Could not delete this user. Please try again.'
+            );
+
+            deleteButton.disabled = false;
+          }
+        }
+      }
+    );
+
+    /* ---------------------------------
+       Initial load
+    --------------------------------- */
+
+    loadUsers();
+  </script>
+
 </body>
 </html>
+```
