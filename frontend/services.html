@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Our Services — Ki Aspire Abroad</title>
+<meta name="description" content="Every way we help students get from application to visa in hand — university shortlisting, essay strategy, visa filing, and more.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,300;0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400;1,6..72,500&family=Archivo:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="grain"></div>
+<div class="progress-bar" id="progressBar"></div>
+
+<nav class="nav" id="nav">
+  <a class="nav-mark" href="index.html" aria-label="Ki Aspire Abroad — home">
+    <span class="nav-mark-text"><img src="Logo.webp" alt="Logo" class="mark-icon"></span>
+  </a>
+  <div class="nav-links">
+    <a href="about.html">About</a>
+    <a href="services.html">Services</a>
+    <a href="index.html#destinations">Destinations</a>
+    <a href="stories.html">Stories</a>
+    <a href="register.html">Get Started</a>
+  </div>
+  <div class="nav-cta">
+    <a href="register.html" class="btn btn-dark">Book a Consultation</a>
+    <button class="nav-toggle" id="navToggle" aria-label="Open menu" aria-expanded="false" aria-controls="mobileMenu">
+      <span></span><span></span>
+    </button>
+  </div>
+</nav>
+
+<div class="mobile-menu" id="mobileMenu">
+  <a href="about.html">About</a>
+  <a href="services.html">Services</a>
+  <a href="index.html#destinations">Destinations</a>
+  <a href="stories.html">Stories</a>
+  <a href="register.html" class="mobile-menu-cta">Get Started</a>
+</div>
+
+<header class="page-hero">
+  <div class="container">
+    <p class="eyebrow eyebrow--light reveal" style="--d:0">Our Services</p>
+    <h1 class="page-hero-title reveal" style="--d:1">Everything between <em>"I want to study abroad"</em> and a visa in hand.</h1>
+    <p class="page-hero-sub reveal" style="--d:2">Every service below is handled by your own counsellor — not routed through a call centre or handed off between departments.</p>
+  </div>
+</header>
+
+<section class="section">
+  <div class="container">
+    <div class="services-grid" id="servicesGrid">
+      <div class="skeleton skeleton-card"></div>
+      <div class="skeleton skeleton-card"></div>
+      <div class="skeleton skeleton-card"></div>
+      <div class="skeleton skeleton-card"></div>
+      <div class="skeleton skeleton-card"></div>
+      <div class="skeleton skeleton-card"></div>
+    </div>
+  </div>
+</section>
+
+<section class="section section--pine cta-band" id="contact">
+  <div class="container cta-grid">
+    <div>
+      <p class="eyebrow eyebrow--light reveal" style="--d:0">Start Here</p>
+      <h2 class="display cta-title reveal" style="--d:1">Not sure which service you need?</h2>
+      <p class="cta-copy reveal" style="--d:2">That's what the first call is for. Tell us where you're stuck and we'll tell you honestly what you actually need.</p>
+    </div>
+    <div class="cta-actions reveal" style="--d:3">
+      <a href="register.html" class="btn btn-light">Book a Private Consultation</a>
+      <div class="cta-contact">
+        <span>hello@kiaspireabroad.com</span>
+        <span>+91 80 4567 1234</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer class="footer">
+  <div class="container footer-grid">
+    <div class="footer-brand">
+      <div class="nav-mark footer-mark">
+        <span class="nav-mark-text"><img src="Logo.webp" alt="Logo" class="mark-icon"></span>
+      </div>
+      <p class="footer-tagline">Independent study abroad counselling headquartered in Kolkata, working with students across India.</p>
+      <p class="footer-dpa">Dream <span>·</span> Plan <span>·</span> Achieve</p>
+    </div>
+    <div class="footer-col">
+      <p class="footer-heading">Explore</p>
+      <a href="about.html">About</a>
+      <a href="services.html">Services</a>
+      <a href="index.html#destinations">Destinations</a>
+      <a href="stories.html">Stories</a>
+    </div>
+    <div class="footer-col">
+      <p class="footer-heading">Contact</p>
+      <a href="mailto:hello@kiaspireabroad.com">hello@kiaspireabroad.com</a>
+      <a href="tel:+918981572430">+91 89815 72430</a>
+      <span>Kolkata, India</span>
+    </div>
+    <div class="footer-col">
+      <p class="footer-heading">Follow</p>
+      <a href="#">Instagram</a>
+      <a href="#">LinkedIn</a>
+    </div>
+  </div>
+  <div class="container footer-bottom">
+    <span>© <span id="year"></span> Ki Aspire Abroad. All rights reserved.</span>
+    <span>Designed for ambitious students.</span>
+  </div>
+</footer>
+
+<script src="api.js"></script>
+<script src="script.js" defer></script>
+<script>
+(function(){
+  var grid = document.getElementById('servicesGrid');
+
+  // A short rotation of display marks for cards — purely decorative,
+  // cycles regardless of how many services come back.
+  var marks = ['01','02','03','04','05','06','07','08'];
+
+  function escapeHtml(str){
+    var div = document.createElement('div');
+    div.textContent = str == null ? '' : String(str);
+    return div.innerHTML;
+  }
+
+  function renderServices(services){
+    if(!services || !services.length){
+      grid.innerHTML = '<div class="empty-state"><p class="empty-state-title">No services listed yet</p><p>Check back soon, or get in touch and we\'ll talk through it directly.</p></div>';
+      return;
+    }
+    grid.innerHTML = services.map(function(s, i){
+      return '<div class="service-card reveal is-visible">' +
+        '<span class="service-card-mark">' + (marks[i % marks.length]) + '</span>' +
+        '<h3>' + escapeHtml(s.name) + '</h3>' +
+        '<p>' + escapeHtml(s.description) + '</p>' +
+        '</div>';
+    }).join('');
+  }
+
+  function renderError(){
+    grid.innerHTML = '<div class="empty-state"><p class="empty-state-title">Couldn\'t load services right now</p><p>Please refresh the page, or reach out to us directly at hello@kiaspireabroad.com.</p></div>';
+  }
+
+  if(window.KiAspireAPI){
+    window.KiAspireAPI.getServices()
+      .then(renderServices)
+      .catch(function(err){ console.error('getServices failed:', err); renderError(); });
+  } else {
+    renderError();
+  }
+})();
+</script>
+</body>
+</html>

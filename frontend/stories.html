@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Success Stories — Ki Aspire Abroad</title>
+<meta name="description" content="Real students, real offers, real visas — stories from students we've placed across 18 countries.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,300;0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400;1,6..72,500&family=Archivo:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="grain"></div>
+<div class="progress-bar" id="progressBar"></div>
+
+<nav class="nav" id="nav">
+  <a class="nav-mark" href="index.html" aria-label="Ki Aspire Abroad — home">
+    <span class="nav-mark-text"><img src="Logo.webp" alt="Logo" class="mark-icon"></span>
+  </a>
+  <div class="nav-links">
+    <a href="about.html">About</a>
+    <a href="services.html">Services</a>
+    <a href="index.html#destinations">Destinations</a>
+    <a href="stories.html">Stories</a>
+    <a href="register.html">Get Started</a>
+  </div>
+  <div class="nav-cta">
+    <a href="register.html" class="btn btn-dark">Book a Consultation</a>
+    <button class="nav-toggle" id="navToggle" aria-label="Open menu" aria-expanded="false" aria-controls="mobileMenu">
+      <span></span><span></span>
+    </button>
+  </div>
+</nav>
+
+<div class="mobile-menu" id="mobileMenu">
+  <a href="about.html">About</a>
+  <a href="services.html">Services</a>
+  <a href="index.html#destinations">Destinations</a>
+  <a href="stories.html">Stories</a>
+  <a href="register.html" class="mobile-menu-cta">Get Started</a>
+</div>
+
+<header class="page-hero">
+  <div class="container">
+    <p class="eyebrow eyebrow--light reveal" style="--d:0">Success Stories</p>
+    <h1 class="page-hero-title reveal" style="--d:1">What families tell us <em>afterward.</em></h1>
+    <p class="page-hero-sub reveal" style="--d:2">Every story here is a real student we've worked with, from the first discovery call to the day they boarded.</p>
+  </div>
+</header>
+
+<section class="section">
+  <div class="container">
+    <div class="stories-cards-grid" id="storiesGrid">
+      <div class="skeleton skeleton-card"></div>
+      <div class="skeleton skeleton-card"></div>
+      <div class="skeleton skeleton-card"></div>
+      <div class="skeleton skeleton-card"></div>
+      <div class="skeleton skeleton-card"></div>
+      <div class="skeleton skeleton-card"></div>
+    </div>
+  </div>
+</section>
+
+<section class="section section--pine cta-band" id="contact">
+  <div class="container cta-grid">
+    <div>
+      <p class="eyebrow eyebrow--light reveal" style="--d:0">Start Here</p>
+      <h2 class="display cta-title reveal" style="--d:1">Your story could start with one call.</h2>
+      <p class="cta-copy reveal" style="--d:2">Thirty minutes, no obligation. Bring your transcripts, your test scores, and a rough idea of where you'd like to end up.</p>
+    </div>
+    <div class="cta-actions reveal" style="--d:3">
+      <a href="register.html" class="btn btn-light">Book a Private Consultation</a>
+      <div class="cta-contact">
+        <span>hello@kiaspireabroad.com</span>
+        <span>+91 80 4567 1234</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer class="footer">
+  <div class="container footer-grid">
+    <div class="footer-brand">
+      <div class="nav-mark footer-mark">
+        <span class="nav-mark-text"><img src="Logo.webp" alt="Logo" class="mark-icon"></span>
+      </div>
+      <p class="footer-tagline">Independent study abroad counselling headquartered in Kolkata, working with students across India.</p>
+      <p class="footer-dpa">Dream <span>·</span> Plan <span>·</span> Achieve</p>
+    </div>
+    <div class="footer-col">
+      <p class="footer-heading">Explore</p>
+      <a href="about.html">About</a>
+      <a href="services.html">Services</a>
+      <a href="index.html#destinations">Destinations</a>
+      <a href="stories.html">Stories</a>
+    </div>
+    <div class="footer-col">
+      <p class="footer-heading">Contact</p>
+      <a href="mailto:hello@kiaspireabroad.com">hello@kiaspireabroad.com</a>
+      <a href="tel:+918981572430">+91 89815 72430</a>
+      <span>Kolkata, India</span>
+    </div>
+    <div class="footer-col">
+      <p class="footer-heading">Follow</p>
+      <a href="#">Instagram</a>
+      <a href="#">LinkedIn</a>
+    </div>
+  </div>
+  <div class="container footer-bottom">
+    <span>© <span id="year"></span> Ki Aspire Abroad. All rights reserved.</span>
+    <span>Designed for ambitious students.</span>
+  </div>
+</footer>
+
+<script src="api.js"></script>
+<script src="script.js" defer></script>
+<script>
+(function(){
+  var grid = document.getElementById('storiesGrid');
+
+  function escapeHtml(str){
+    var div = document.createElement('div');
+    div.textContent = str == null ? '' : String(str);
+    return div.innerHTML;
+  }
+
+  function renderStories(stories){
+    if(!stories || !stories.length){
+      grid.innerHTML = '<div class="empty-state"><p class="empty-state-title">No stories published yet</p><p>Check back soon — new stories are added regularly.</p></div>';
+      return;
+    }
+    grid.innerHTML = stories.map(function(s){
+      var storyId = s._id || s.id;
+      var thumb = s.thumbnail || ('https://picsum.photos/seed/kiaspire-story-' + storyId + '/640/480');
+      return '<a class="story-card reveal is-visible" href="story-detail.html?id=' + encodeURIComponent(storyId) + '">' +
+        '<div class="story-card-media"><img src="' + escapeHtml(thumb) + '" alt="' + escapeHtml(s.studentName) + '" loading="lazy"></div>' +
+        '<div class="story-card-body">' +
+          '<span class="story-card-country">' + escapeHtml(s.country) + '</span>' +
+          '<h3>' + escapeHtml(s.studentName) + '</h3>' +
+          '<p class="story-card-uni">' + escapeHtml(s.university) + '</p>' +
+        '</div>' +
+      '</a>';
+    }).join('');
+  }
+
+  function renderError(){
+    grid.innerHTML = '<div class="empty-state"><p class="empty-state-title">Couldn\'t load stories right now</p><p>Please refresh the page, or reach out to us directly at hello@kiaspireabroad.com.</p></div>';
+  }
+
+  if(window.KiAspireAPI){
+    window.KiAspireAPI.getStories()
+      .then(renderStories)
+      .catch(function(err){ console.error('getStories failed:', err); renderError(); });
+  } else {
+    renderError();
+  }
+})();
+</script>
+</body>
+</html>
