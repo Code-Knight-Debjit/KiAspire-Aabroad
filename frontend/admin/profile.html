@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>My Profile — Ki Aspire Abroad Admin</title>
+<meta name="robots" content="noindex, nofollow">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,300;0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400;1,6..72,500&family=Archivo:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../style.css">
+</head>
+<body class="admin-body">
+
+<div class="admin-mobile-bar">
+  <img src="../Logo.webp" alt="Ki Aspire Abroad">
+  <button class="admin-mobile-toggle" id="adminMobileToggle" aria-label="Open menu">☰</button>
+</div>
+<div class="admin-sidebar-scrim" id="adminSidebarScrim"></div>
+
+<div class="admin-shell">
+  <aside class="admin-sidebar" id="adminSidebar">
+    <div class="admin-sidebar-logo"><img src="../Logo.webp" alt="Ki Aspire Abroad" style="width:100%; height:auto;"></div>
+    <p class="admin-sidebar-tag">Admin Panel</p>
+    <nav class="admin-nav">
+      <a href="dashboard.html"><span class="admin-nav-icon">◆</span> Dashboard</a>
+      <a href="users.html"><span class="admin-nav-icon">◆</span> Manage Users</a>
+      <a href="services.html"><span class="admin-nav-icon">◆</span> Manage Services</a>
+      <a href="stories.html"><span class="admin-nav-icon">◆</span> Manage Stories</a>
+      <a href="profile.html" class="is-active"><span class="admin-nav-icon">◆</span> My Profile</a>
+    </nav>
+    <div class="admin-sidebar-footer">
+      <div class="admin-sidebar-admin"><strong id="sidebarAdminName">Admin</strong>Signed in</div>
+      <button class="admin-logout-btn" type="button" data-admin-logout>Log Out</button>
+    </div>
+  </aside>
+
+  <main class="admin-main">
+    <div class="admin-topbar">
+      <div>
+        <p class="eyebrow admin-eyebrow">Account</p>
+        <h1 class="admin-title">My Profile</h1>
+      </div>
+      
+    </div>
+
+    
+    <div class="admin-card admin-card-pad" id="profileCard" style="max-width:560px;">
+      <p class="cell-muted">Loading…</p>
+    </div>
+
+  </main>
+</div>
+
+
+
+<script src="../api.js"></script>
+<script src="admin.js"></script>
+<script>
+
+  function escapeHtml(str){
+    var div = document.createElement('div');
+    div.textContent = str == null ? '' : String(str);
+    return div.innerHTML;
+  }
+  function formatDate(iso){
+    if(!iso) return '—';
+    var d = new Date(iso);
+    if(isNaN(d.getTime())) return String(iso);
+    return d.toLocaleDateString('en-IN', { day:'numeric', month:'short', year:'numeric' });
+  }
+
+  var card = document.getElementById('profileCard');
+  window.KiAspireAPI.getAdminProfile()
+    .then(function(admin){
+      card.innerHTML =
+        '<div class="detail-field"><strong>Name</strong><span>' + escapeHtml(admin.name) + '</span></div>' +
+        '<div class="detail-field"><strong>Email</strong><span>' + escapeHtml(admin.email) + '</span></div>' +
+        '<div class="detail-field" style="border-bottom:none;"><strong>Admin ID</strong><span>' + escapeHtml(admin.id) + '</span></div>';
+    })
+    .catch(function(err){
+      console.error('getAdminProfile failed:', err);
+      card.innerHTML = '<p class="cell-muted">Couldn\'t load your profile right now. Please refresh the page.</p>';
+    });
+
+</script>
+</body>
+</html>

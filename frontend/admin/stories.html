@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Manage Stories — Ki Aspire Abroad Admin</title>
+<meta name="robots" content="noindex, nofollow">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,300;0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400;1,6..72,500&family=Archivo:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../style.css">
+</head>
+<body class="admin-body">
+
+<div class="admin-mobile-bar">
+  <img src="../Logo.webp" alt="Ki Aspire Abroad">
+  <button class="admin-mobile-toggle" id="adminMobileToggle" aria-label="Open menu">☰</button>
+</div>
+<div class="admin-sidebar-scrim" id="adminSidebarScrim"></div>
+
+<div class="admin-shell">
+  <aside class="admin-sidebar" id="adminSidebar">
+    <div class="admin-sidebar-logo"><img src="../Logo.webp" alt="Ki Aspire Abroad" style="width:100%; height:auto;"></div>
+    <p class="admin-sidebar-tag">Admin Panel</p>
+    <nav class="admin-nav">
+      <a href="dashboard.html"><span class="admin-nav-icon">◆</span> Dashboard</a>
+      <a href="users.html"><span class="admin-nav-icon">◆</span> Manage Users</a>
+      <a href="services.html"><span class="admin-nav-icon">◆</span> Manage Services</a>
+      <a href="stories.html" class="is-active"><span class="admin-nav-icon">◆</span> Manage Stories</a>
+      <a href="profile.html"><span class="admin-nav-icon">◆</span> My Profile</a>
+    </nav>
+    <div class="admin-sidebar-footer">
+      <div class="admin-sidebar-admin"><strong id="sidebarAdminName">Admin</strong>Signed in</div>
+      <button class="admin-logout-btn" type="button" data-admin-logout>Log Out</button>
+    </div>
+  </aside>
+
+  <main class="admin-main">
+    <div class="admin-topbar">
+      <div>
+        <p class="eyebrow admin-eyebrow">Stories</p>
+        <h1 class="admin-title">Manage Stories</h1>
+      </div>
+      <div class="admin-topbar-actions"><button type="button" class="btn btn-dark" data-add-story>+ Add Story</button></div>
+    </div>
+
+    
+    <div class="admin-card">
+      <div class="table-toolbar">
+        <div class="table-search"><input type="text" id="storySearch" placeholder="Search by student name…"></div>
+      </div>
+      <div class="table-scroll">
+        <table class="admin-table">
+          <thead><tr><th></th><th>Student</th><th>Country</th><th>University</th><th>Status</th><th>Actions</th></tr></thead>
+          <tbody id="storiesBody">
+            <tr><td colspan="6" class="cell-muted">Loading…</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="modal-overlay" id="storyModal">
+      <div class="modal-box">
+        <div class="modal-head">
+          <h2 class="modal-title" id="storyModalTitle">Add Story</h2>
+          <button type="button" class="modal-close" data-close-modal>&times;</button>
+        </div>
+        <div class="form-status" id="storyFormStatus"></div>
+        <form id="storyForm" novalidate>
+          <input type="hidden" id="storyId">
+          <div class="form-row">
+            <div class="form-field" id="fieldStudentName">
+              <label for="studentName">Student name</label>
+              <input type="text" id="studentName" required>
+              <span class="form-error">Required.</span>
+            </div>
+            <div class="form-field" id="fieldCountry">
+              <label for="storyCountry">Country</label>
+              <input type="text" id="storyCountry" required>
+              <span class="form-error">Required.</span>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-field" id="fieldUniversity">
+              <label for="storyUniversity">University</label>
+              <input type="text" id="storyUniversity" required>
+              <span class="form-error">Required.</span>
+            </div>
+            <div class="form-field">
+              <label for="storyCourse">Course</label>
+              <input type="text" id="storyCourse">
+            </div>
+          </div>
+          <div class="form-field">
+            <label for="thumbnailUrl">Thumbnail image URL</label>
+            <input type="url" id="thumbnailUrl" placeholder="https://…">
+          </div>
+          <div class="form-field">
+            <label for="youtubeUrl">YouTube video URL</label>
+            <input type="url" id="youtubeUrl" placeholder="https://www.youtube.com/watch?v=…">
+          </div>
+          <div class="form-field">
+            <label for="storyQuote">Short quote (used on the homepage)</label>
+            <textarea id="storyQuote" placeholder="A short pull-quote, one or two sentences."></textarea>
+          </div>
+          <div class="form-field">
+            <label for="storyContent">Full story</label>
+            <textarea id="storyContent" style="min-height:140px;" placeholder="The full story shown on the story detail page."></textarea>
+          </div>
+          <div class="form-field">
+            <label for="storyStatus">Status</label>
+            <select id="storyStatus">
+              <option value="active">Active (visible on the site)</option>
+              <option value="inactive">Inactive (hidden from the site)</option>
+            </select>
+          </div>
+          <div class="modal-actions">
+            <button type="button" class="btn btn-outline" data-close-modal>Cancel</button>
+            <button type="submit" class="btn btn-dark" id="storySubmitBtn">Save Story</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+
+
+<script src="../api.js"></script>
+<script src="admin.js"></script>
+<script>
+
+  function escapeHtml(str){
+    var div = document.createElement('div');
+    div.textContent = str == null ? '' : String(str);
+    return div.innerHTML;
+  }
+  function formatDate(iso){
+    if(!iso) return '—';
+    var d = new Date(iso);
+    if(isNaN(d.getTime())) return String(iso);
+    return d.toLocaleDateString('en-IN', { day:'numeric', month:'short', year:'numeric' });
+  }
+
+  var allStories = [];
+  var tbody = document.getElementById('storiesBody');
+  var modal = document.getElementById('storyModal');
+  var form = document.getElementById('storyForm');
+  var modalTitle = document.getElementById('storyModalTitle');
+  var statusEl = document.getElementById('storyFormStatus');
+  var submitBtn = document.getElementById('storySubmitBtn');
+
+  function rowHtml(s){
+    var thumb = s.thumbnailUrl || ('https://picsum.photos/seed/kiaspire-story-' + s.id + '/100/100');
+    return '<tr>' +
+      '<td><img class="thumb-cell" src="' + escapeHtml(thumb) + '" alt="" loading="lazy"></td>' +
+      '<td class="cell-primary">' + escapeHtml(s.studentName) + '</td>' +
+      '<td class="cell-muted">' + escapeHtml(s.country) + '</td>' +
+      '<td class="cell-muted">' + escapeHtml(s.university) + '</td>' +
+      '<td><span class="status-badge is-' + (s.status === 'inactive' ? 'inactive' : 'active') + '">' + escapeHtml(s.status || 'active') + '</span></td>' +
+      '<td class="cell-actions">' +
+        '<a class="table-action" href="../story-detail.html?id=' + encodeURIComponent(s.id) + '" target="_blank" rel="noopener">View</a>' +
+        '<button type="button" class="table-action" data-edit-story="' + escapeHtml(s.id) + '">Edit</button>' +
+        '<button type="button" class="table-action is-danger" data-delete-story="' + escapeHtml(s.id) + '">Delete</button>' +
+      '</td>' +
+    '</tr>';
+  }
+
+  function render(list){
+    if(!list.length){
+      tbody.innerHTML = '<tr><td colspan="6"><div class="empty-state"><p class="empty-state-title">No stories yet</p><p>Click "Add Story" to publish your first one.</p></div></td></tr>';
+      return;
+    }
+    tbody.innerHTML = list.map(rowHtml).join('');
+  }
+
+  function load(){
+    window.KiAspireAPI.getAdminStories()
+      .then(function(stories){ allStories = stories || []; render(allStories); })
+      .catch(function(err){
+        console.error('getAdminStories failed:', err);
+        tbody.innerHTML = '<tr><td colspan="6"><div class="empty-state"><p class="empty-state-title">Couldn\'t load stories</p><p>Please refresh the page.</p></div></td></tr>';
+      });
+  }
+
+  document.getElementById('storySearch').addEventListener('input', function(e){
+    var q = e.target.value.trim().toLowerCase();
+    render(!q ? allStories : allStories.filter(function(s){ return (s.studentName || '').toLowerCase().indexOf(q) > -1; }));
+  });
+
+  var storyFields = ['fieldStudentName', 'fieldCountry', 'fieldUniversity'];
+
+  function openModal(story){
+    form.reset();
+    statusEl.className = 'form-status';
+    storyFields.forEach(function(f){ document.getElementById(f).classList.remove('has-error'); });
+    if(story){
+      modalTitle.textContent = 'Edit Story';
+      document.getElementById('storyId').value = story.id;
+      document.getElementById('studentName').value = story.studentName || '';
+      document.getElementById('storyCountry').value = story.country || '';
+      document.getElementById('storyUniversity').value = story.university || '';
+      document.getElementById('storyCourse').value = story.course || '';
+      document.getElementById('thumbnailUrl').value = story.thumbnailUrl || '';
+      document.getElementById('youtubeUrl').value = story.youtubeUrl || '';
+      document.getElementById('storyQuote').value = story.quote || '';
+      document.getElementById('storyContent').value = story.content || '';
+      document.getElementById('storyStatus').value = story.status === 'inactive' ? 'inactive' : 'active';
+    } else {
+      modalTitle.textContent = 'Add Story';
+      document.getElementById('storyId').value = '';
+      document.getElementById('storyStatus').value = 'active';
+    }
+    modal.classList.add('is-open');
+  }
+  function closeModal(){ modal.classList.remove('is-open'); }
+
+  document.querySelector('[data-add-story]').addEventListener('click', function(){ openModal(null); });
+  modal.querySelectorAll('[data-close-modal]').forEach(function(btn){ btn.addEventListener('click', closeModal); });
+  modal.addEventListener('click', function(e){ if(e.target === modal) closeModal(); });
+
+  tbody.addEventListener('click', function(e){
+    var editBtn = e.target.closest('[data-edit-story]');
+    if(editBtn){
+      var story = allStories.find(function(s){ return String(s.id) === editBtn.getAttribute('data-edit-story'); });
+      if(story) openModal(story);
+      return;
+    }
+    var delBtn = e.target.closest('[data-delete-story]');
+    if(delBtn){
+      if(!confirm('Delete this story permanently?')) return;
+      var id = delBtn.getAttribute('data-delete-story');
+      delBtn.disabled = true;
+      window.KiAspireAPI.deleteStory(id)
+        .then(function(){ load(); })
+        .catch(function(err){ console.error(err); alert('Could not delete this story.'); delBtn.disabled = false; });
+    }
+  });
+
+  form.addEventListener('submit', function(e){
+    e.preventDefault();
+    var ok = true;
+    var values = {
+      studentName: document.getElementById('studentName').value.trim(),
+      country: document.getElementById('storyCountry').value.trim(),
+      university: document.getElementById('storyUniversity').value.trim()
+    };
+    [['fieldStudentName','studentName'], ['fieldCountry','country'], ['fieldUniversity','university']].forEach(function(pair){
+      var field = document.getElementById(pair[0]);
+      var valid = !!values[pair[1]];
+      field.classList.toggle('has-error', !valid);
+      if(!valid) ok = false;
+    });
+    if(!ok) return;
+
+    var payload = {
+      studentName: values.studentName,
+      country: values.country,
+      university: values.university,
+      course: document.getElementById('storyCourse').value.trim(),
+      thumbnailUrl: document.getElementById('thumbnailUrl').value.trim(),
+      youtubeUrl: document.getElementById('youtubeUrl').value.trim(),
+      quote: document.getElementById('storyQuote').value.trim(),
+      content: document.getElementById('storyContent').value.trim(),
+      status: document.getElementById('storyStatus').value
+    };
+    var id = document.getElementById('storyId').value;
+
+    submitBtn.disabled = true;
+    submitBtn.textContent = 'Saving…';
+
+    var request = id ? window.KiAspireAPI.updateStory(id, payload) : window.KiAspireAPI.createStory(payload);
+    request
+      .then(function(){ closeModal(); load(); })
+      .catch(function(err){
+        console.error('save story failed:', err);
+        statusEl.className = 'form-status is-visible is-error';
+        statusEl.textContent = (err && err.message) || 'Could not save this story. Please try again.';
+      })
+      .then(function(){
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'Save Story';
+      });
+  });
+
+  load();
+
+</script>
+</body>
+</html>

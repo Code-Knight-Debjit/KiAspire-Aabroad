@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Manage Services — Ki Aspire Abroad Admin</title>
+<meta name="robots" content="noindex, nofollow">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,300;0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400;1,6..72,500&family=Archivo:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../style.css">
+</head>
+<body class="admin-body">
+
+<div class="admin-mobile-bar">
+  <img src="../Logo.webp" alt="Ki Aspire Abroad">
+  <button class="admin-mobile-toggle" id="adminMobileToggle" aria-label="Open menu">☰</button>
+</div>
+<div class="admin-sidebar-scrim" id="adminSidebarScrim"></div>
+
+<div class="admin-shell">
+  <aside class="admin-sidebar" id="adminSidebar">
+    <div class="admin-sidebar-logo"><img src="../Logo.webp" alt="Ki Aspire Abroad" style="width:100%; height:auto;"></div>
+    <p class="admin-sidebar-tag">Admin Panel</p>
+    <nav class="admin-nav">
+      <a href="dashboard.html"><span class="admin-nav-icon">◆</span> Dashboard</a>
+      <a href="users.html"><span class="admin-nav-icon">◆</span> Manage Users</a>
+      <a href="services.html" class="is-active"><span class="admin-nav-icon">◆</span> Manage Services</a>
+      <a href="stories.html"><span class="admin-nav-icon">◆</span> Manage Stories</a>
+      <a href="profile.html"><span class="admin-nav-icon">◆</span> My Profile</a>
+    </nav>
+    <div class="admin-sidebar-footer">
+      <div class="admin-sidebar-admin"><strong id="sidebarAdminName">Admin</strong>Signed in</div>
+      <button class="admin-logout-btn" type="button" data-admin-logout>Log Out</button>
+    </div>
+  </aside>
+
+  <main class="admin-main">
+    <div class="admin-topbar">
+      <div>
+        <p class="eyebrow admin-eyebrow">Services</p>
+        <h1 class="admin-title">Manage Services</h1>
+      </div>
+      <div class="admin-topbar-actions"><button type="button" class="btn btn-dark" data-add-service>+ Add Service</button></div>
+    </div>
+
+    
+    <div class="admin-card">
+      <div class="table-toolbar">
+        <div class="table-search"><input type="text" id="serviceSearch" placeholder="Search services…"></div>
+      </div>
+      <div class="table-scroll">
+        <table class="admin-table">
+          <thead><tr><th>Title</th><th>Description</th><th>Status</th><th>Actions</th></tr></thead>
+          <tbody id="servicesBody">
+            <tr><td colspan="4" class="cell-muted">Loading…</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="modal-overlay" id="serviceModal">
+      <div class="modal-box">
+        <div class="modal-head">
+          <h2 class="modal-title" id="serviceModalTitle">Add Service</h2>
+          <button type="button" class="modal-close" data-close-modal>&times;</button>
+        </div>
+        <div class="form-status" id="serviceFormStatus"></div>
+        <form id="serviceForm" novalidate>
+          <input type="hidden" id="serviceId">
+          <div class="form-field" id="fieldServiceTitle">
+            <label for="serviceTitle">Title</label>
+            <input type="text" id="serviceTitle" placeholder="e.g. Visa Filing & Interview Coaching" required>
+            <span class="form-error">Please enter a title.</span>
+          </div>
+          <div class="form-field" id="fieldServiceDescription">
+            <label for="serviceDescription">Description</label>
+            <textarea id="serviceDescription" placeholder="What does this service cover?" required></textarea>
+            <span class="form-error">Please enter a description.</span>
+          </div>
+          <div class="form-field">
+            <label for="serviceStatus">Status</label>
+            <select id="serviceStatus">
+              <option value="active">Active (visible on the site)</option>
+              <option value="inactive">Inactive (hidden from the site)</option>
+            </select>
+          </div>
+          <div class="modal-actions">
+            <button type="button" class="btn btn-outline" data-close-modal>Cancel</button>
+            <button type="submit" class="btn btn-dark" id="serviceSubmitBtn">Save Service</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+
+
+<script src="../api.js"></script>
+<script src="admin.js"></script>
+<script>
+
+  function escapeHtml(str){
+    var div = document.createElement('div');
+    div.textContent = str == null ? '' : String(str);
+    return div.innerHTML;
+  }
+  function formatDate(iso){
+    if(!iso) return '—';
+    var d = new Date(iso);
+    if(isNaN(d.getTime())) return String(iso);
+    return d.toLocaleDateString('en-IN', { day:'numeric', month:'short', year:'numeric' });
+  }
+
+  var allServices = [];
+  var tbody = document.getElementById('servicesBody');
+  var modal = document.getElementById('serviceModal');
+  var form = document.getElementById('serviceForm');
+  var modalTitle = document.getElementById('serviceModalTitle');
+  var statusEl = document.getElementById('serviceFormStatus');
+  var submitBtn = document.getElementById('serviceSubmitBtn');
+
+  function truncate(str, n){
+    str = str || '';
+    return str.length > n ? str.slice(0, n).trim() + '…' : str;
+  }
+
+  function rowHtml(s){
+    return '<tr>' +
+      '<td class="cell-primary">' + escapeHtml(s.title) + '</td>' +
+      '<td class="cell-muted">' + escapeHtml(truncate(s.description, 70)) + '</td>' +
+      '<td><span class="status-badge is-' + (s.status === 'inactive' ? 'inactive' : 'active') + '">' + escapeHtml(s.status || 'active') + '</span></td>' +
+      '<td class="cell-actions">' +
+        '<button type="button" class="table-action" data-edit-service="' + escapeHtml(s.id) + '">Edit</button>' +
+        '<button type="button" class="table-action is-danger" data-delete-service="' + escapeHtml(s.id) + '">Delete</button>' +
+      '</td>' +
+    '</tr>';
+  }
+
+  function render(list){
+    if(!list.length){
+      tbody.innerHTML = '<tr><td colspan="4"><div class="empty-state"><p class="empty-state-title">No services yet</p><p>Click "Add Service" to create your first one.</p></div></td></tr>';
+      return;
+    }
+    tbody.innerHTML = list.map(rowHtml).join('');
+  }
+
+  function load(){
+    window.KiAspireAPI.getAdminServices()
+      .then(function(services){ allServices = services || []; render(allServices); })
+      .catch(function(err){
+        console.error('getAdminServices failed:', err);
+        tbody.innerHTML = '<tr><td colspan="4"><div class="empty-state"><p class="empty-state-title">Couldn\'t load services</p><p>Please refresh the page.</p></div></td></tr>';
+      });
+  }
+
+  document.getElementById('serviceSearch').addEventListener('input', function(e){
+    var q = e.target.value.trim().toLowerCase();
+    render(!q ? allServices : allServices.filter(function(s){ return (s.title || '').toLowerCase().indexOf(q) > -1; }));
+  });
+
+  function openModal(service){
+    form.reset();
+    statusEl.className = 'form-status';
+    document.getElementById('fieldServiceTitle').classList.remove('has-error');
+    document.getElementById('fieldServiceDescription').classList.remove('has-error');
+    if(service){
+      modalTitle.textContent = 'Edit Service';
+      document.getElementById('serviceId').value = service.id;
+      document.getElementById('serviceTitle').value = service.title || '';
+      document.getElementById('serviceDescription').value = service.description || '';
+      document.getElementById('serviceStatus').value = service.status === 'inactive' ? 'inactive' : 'active';
+    } else {
+      modalTitle.textContent = 'Add Service';
+      document.getElementById('serviceId').value = '';
+      document.getElementById('serviceStatus').value = 'active';
+    }
+    modal.classList.add('is-open');
+  }
+  function closeModal(){ modal.classList.remove('is-open'); }
+
+  document.querySelector('[data-add-service]').addEventListener('click', function(){ openModal(null); });
+  modal.querySelectorAll('[data-close-modal]').forEach(function(btn){ btn.addEventListener('click', closeModal); });
+  modal.addEventListener('click', function(e){ if(e.target === modal) closeModal(); });
+
+  tbody.addEventListener('click', function(e){
+    var editBtn = e.target.closest('[data-edit-service]');
+    if(editBtn){
+      var svc = allServices.find(function(s){ return String(s.id) === editBtn.getAttribute('data-edit-service'); });
+      if(svc) openModal(svc);
+      return;
+    }
+    var delBtn = e.target.closest('[data-delete-service]');
+    if(delBtn){
+      if(!confirm('Delete this service permanently?')) return;
+      var id = delBtn.getAttribute('data-delete-service');
+      delBtn.disabled = true;
+      window.KiAspireAPI.deleteService(id)
+        .then(function(){ load(); })
+        .catch(function(err){ console.error(err); alert('Could not delete this service.'); delBtn.disabled = false; });
+    }
+  });
+
+  form.addEventListener('submit', function(e){
+    e.preventDefault();
+    var titleField = document.getElementById('fieldServiceTitle');
+    var descField = document.getElementById('fieldServiceDescription');
+    var title = document.getElementById('serviceTitle').value.trim();
+    var description = document.getElementById('serviceDescription').value.trim();
+    var ok = true;
+    titleField.classList.toggle('has-error', !title); if(!title) ok = false;
+    descField.classList.toggle('has-error', !description); if(!description) ok = false;
+    if(!ok) return;
+
+    var payload = { title: title, description: description, status: document.getElementById('serviceStatus').value };
+    var id = document.getElementById('serviceId').value;
+
+    submitBtn.disabled = true;
+    submitBtn.textContent = 'Saving…';
+
+    var request = id ? window.KiAspireAPI.updateService(id, payload) : window.KiAspireAPI.createService(payload);
+    request
+      .then(function(){ closeModal(); load(); })
+      .catch(function(err){
+        console.error('save service failed:', err);
+        statusEl.className = 'form-status is-visible is-error';
+        statusEl.textContent = (err && err.message) || 'Could not save this service. Please try again.';
+      })
+      .then(function(){
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'Save Service';
+      });
+  });
+
+  load();
+
+</script>
+</body>
+</html>
