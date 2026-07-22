@@ -1,0 +1,508 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ki Aspire Abroad — Study Abroad Consultancy</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,300;0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400;1,6..72,500&family=Archivo:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="grain"></div>
+<div class="progress-bar" id="progressBar"></div>
+
+<nav class="nav" id="nav">
+  <a class="nav-mark" href="#hero" aria-label="Ki Aspire Abroad — home">
+
+    <span class="nav-mark-text">
+      <img src="Logo.webp" alt="Logo" class="mark-icon">
+    </span>
+  </a>
+  <div class="nav-links">
+    <a href="about.html">About</a>
+    <a href="services.html">Services</a>
+    <a href="#destinations">Destinations</a>
+    <a href="stories.html">Stories</a>
+    <a href="register.html">Get Started</a>
+  </div>
+  <div class="nav-cta">
+    <a href="register.html" class="btn btn-dark">Book a Consultation</a>
+    <button class="nav-toggle" id="navToggle" aria-label="Open menu" aria-expanded="false" aria-controls="mobileMenu">
+      <span></span><span></span>
+    </button>
+  </div>
+</nav>
+
+<div class="mobile-menu" id="mobileMenu">
+  <a href="about.html">About</a>
+  <a href="services.html">Services</a>
+  <a href="#destinations">Destinations</a>
+  <a href="stories.html">Stories</a>
+  <a href="register.html" class="mobile-menu-cta">Get Started</a>
+</div>
+
+<div class="intro-overlay" id="introOverlay" aria-hidden="true">
+  <canvas id="coverCanvas"></canvas>
+  <canvas id="planeCanvas"></canvas>
+  <!-- <button class="intro-skip" id="introSkip" type="button">Skip intro <span aria-hidden="true">→</span></button> -->
+</div>
+
+<section class="hero" id="hero">
+  <div class="hero-media">
+    <img class="hero-photo" src="https://picsum.photos/seed/kiaspire-voyage/1920/1280" alt="">
+    <div class="hero-scrim"></div>
+  </div>
+  <div class="hero-content">
+    <p class="eyebrow eyebrow--light reveal-hero-text">Study Abroad Consultancy</p>
+    <h1 class="hero-headline">
+      <span class="reveal-hero-text">Elsewhere is</span>
+      <span class="reveal-hero-text"><em>closer</em> than you think.</span>
+    </h1>
+    <p class="hero-sub reveal-hero-text">Bespoke counselling for ambitious students pursuing a world-class education — from the first conversation to the visa in hand.</p>
+    <div class="hero-actions reveal-hero-text">
+      <a href="register.html" class="btn btn-light">Book a Private Consultation</a>
+      <a href="#destinations" class="hero-link">View Destinations <span class="hero-link-arrow">↓</span></a>
+    </div>
+  </div>
+  <div class="hero-scrollcue" aria-hidden="true"><span></span></div>
+</section>
+
+<section class="marquee-band" aria-label="Key figures">
+  <div class="marquee-track">
+    <div class="marquee-group">
+      <span>500+ Students Guided</span><span class="marquee-dot">✦</span>
+      <span>40+ Partner Universities</span><span class="marquee-dot">✦</span>
+      <span>18 Countries</span><span class="marquee-dot">✦</span>
+      <span>96% Visa Success Rate</span><span class="marquee-dot">✦</span>
+      <span>Established 2012</span><span class="marquee-dot">✦</span>
+    </div>
+    <div class="marquee-group" aria-hidden="true">
+      <span>500+ Students Guided</span><span class="marquee-dot">✦</span>
+      <span>40+ Partner Universities</span><span class="marquee-dot">✦</span>
+      <span>18 Countries</span><span class="marquee-dot">✦</span>
+      <span>96% Visa Success Rate</span><span class="marquee-dot">✦</span>
+      <span>Established 2012</span><span class="marquee-dot">✦</span>
+    </div>
+  </div>
+</section>
+
+<section class="section approach" id="approach">
+  <div class="container approach-grid">
+    <div class="approach-text">
+      <p class="eyebrow reveal" style="--d:0">Our Approach</p>
+      <h2 class="display approach-statement reveal" style="--d:1">We don't process applications. <em>We build a case for you.</em></h2>
+      <p class="approach-copy reveal" style="--d:2">Every student works with one counsellor from the first call to the day they board — no call centre, no hand-offs, no generic shortlist. We spend the first month understanding what you're actually good at, then build a university list, a narrative, and a timeline around it.</p>
+      <ul class="approach-points">
+        <li class="reveal" style="--d:3">One dedicated counsellor, start to finish.</li>
+        <li class="reveal" style="--d:4">Applications built around your record, not a template.</li>
+        <li class="reveal" style="--d:5">Direct access to your counsellor by phone, not a ticket queue.</li>
+      </ul>
+    </div>
+    <div class="approach-media reveal-photo" style="--d:2">
+      <img src="https://picsum.photos/seed/kiaspire-counsel/1100/1400" alt="">
+    </div>
+  </div>
+</section>
+
+<section class="section counsel" id="counsel">
+  <div class="container">
+    <p class="eyebrow reveal" style="--d:0">Areas of Counsel</p>
+    <p class="counsel-flow">
+      <span class="reveal" style="--d:1">University Shortlisting</span><span class="counsel-sep" aria-hidden="true">✦</span>
+      <span class="reveal" style="--d:2">Application &amp; Essay Strategy</span><span class="counsel-sep" aria-hidden="true">✦</span>
+      <span class="reveal" style="--d:3">Visa Filing &amp; Interview Coaching</span><span class="counsel-sep" aria-hidden="true">✦</span>
+      <span class="reveal" style="--d:4">Scholarship &amp; Financial Aid</span><span class="counsel-sep" aria-hidden="true">✦</span>
+      <span class="reveal" style="--d:5">Test Preparation Partnerships</span><span class="counsel-sep" aria-hidden="true">✦</span>
+      <span class="reveal" style="--d:6">Pre-Departure Orientation</span><span class="counsel-sep" aria-hidden="true">✦</span>
+      <span class="reveal" style="--d:7">Post-Arrival Support</span>
+    </p>
+  </div>
+</section>
+
+<section class="section" id="featured-services">
+  <div class="container">
+    <div class="section-head">
+      <p class="eyebrow reveal" style="--d:0">What We Offer</p>
+      <h2 class="section-head-title reveal" style="--d:1">A few of the ways <em>we help you get there.</em></h2>
+    </div>
+    <div class="services-grid" id="homeServicesGrid">
+      <div class="skeleton skeleton-card"></div>
+      <div class="skeleton skeleton-card"></div>
+      <div class="skeleton skeleton-card"></div>
+    </div>
+    <div class="reveal" style="--d:2; margin-top:44px; text-align:center;">
+      <a href="services.html" class="hero-link" style="justify-content:center; color:var(--blue-deep);">View All Services <span class="hero-link-arrow">→</span></a>
+    </div>
+  </div>
+</section>
+<section class="section--pine destinations" id="destinations">
+  <div class="container destinations-head">
+    <p class="eyebrow eyebrow--light reveal" style="--d:0">
+      Where We Send Students
+    </p>
+
+    <h2 class="display destinations-title reveal" style="--d:1">
+      Eighteen countries and counting. <em>These six come up most.</em>
+    </h2>
+  </div>
+
+  <div class="destinations-scroller">
+    <div class="destinations-steps">
+      <div
+        class="dest-step is-active"
+        data-index="0"
+        data-url="dubai.html"
+        tabindex="0"
+        role="link"
+      >
+        <span class="dest-step-num">01</span>
+        <span class="dest-step-continent">Asia</span>
+        <h3 class="dest-step-name">Dubai, UAE</h3>
+        <p class="dest-step-copy">
+          International branch campuses, tax-free earnings, and a flight
+          time shorter than most domestic routes.
+        </p>
+        <p class="dest-step-fact">Under 4 hours from most Indian cities</p>
+      </div>
+
+      <div
+        class="dest-step"
+        data-index="1"
+        data-url="singapore.html"
+        tabindex="0"
+        role="link"
+      >
+        <span class="dest-step-num">02</span>
+        <span class="dest-step-continent">Asia</span>
+        <h3 class="dest-step-name">Singapore</h3>
+        <p class="dest-step-copy">
+          English-medium instruction, globally ranked universities, and a
+          launchpad into Asia-Pacific careers.
+        </p>
+        <p class="dest-step-fact">
+          2 universities in Asia's top 30
+        </p>
+      </div>
+
+      <div
+        class="dest-step"
+        data-index="2"
+        data-url="uk.html"
+        tabindex="0"
+        role="link"
+      >
+        <span class="dest-step-num">03</span>
+        <span class="dest-step-continent">Europe</span>
+        <h3 class="dest-step-name">United Kingdom</h3>
+        <p class="dest-step-copy">
+          One-year master's degrees and centuries of academic tradition.
+        </p>
+        <p class="dest-step-fact">
+          Most master's degrees take one year
+        </p>
+      </div>
+
+      <div
+        class="dest-step"
+        data-index="3"
+        data-url="australia.html"
+        tabindex="0"
+        role="link"
+      >
+        <span class="dest-step-num">04</span>
+        <span class="dest-step-continent">Oceania</span>
+        <h3 class="dest-step-name">Australia</h3>
+        <p class="dest-step-copy">
+          Globally ranked universities and a strong post-study visa pathway.
+        </p>
+        <p class="dest-step-fact">
+          8 universities in the world top 100
+        </p>
+      </div>
+
+      <div
+        class="dest-step"
+        data-index="4"
+        data-url="canada.html"
+        tabindex="0"
+        role="link"
+      >
+        <span class="dest-step-num">05</span>
+        <span class="dest-step-continent">North America</span>
+        <h3 class="dest-step-name">Canada</h3>
+        <p class="dest-step-copy">
+          Post-study work permits and a clear runway to permanent residency.
+        </p>
+        <p class="dest-step-fact">
+          Post-Graduation Work Permit pathways
+        </p>
+      </div>
+
+      <div
+        class="dest-step"
+        data-index="5"
+        data-url="us.html"
+        tabindex="0"
+        role="link"
+      >
+        <span class="dest-step-num">06</span>
+        <span class="dest-step-continent">North America</span>
+        <h3 class="dest-step-name">United States</h3>
+        <p class="dest-step-copy">
+          The widest range of programs on earth, from liberal arts colleges
+          to research powerhouses.
+        </p>
+        <p class="dest-step-fact">1,000+ accredited institutions</p>
+      </div>
+    </div>
+
+    <div class="destinations-visual">
+      <div
+        class="dest-panel is-active"
+        data-index="0"
+        data-url="dubai.html"
+        tabindex="0"
+        role="link"
+      >
+        <img
+          src="https://picsum.photos/seed/kiaspire-dubai/1600/1100"
+          alt="Study in Dubai, UAE"
+        >
+      </div>
+
+      <div
+        class="dest-panel"
+        data-index="1"
+        data-url="singapore.html"
+        tabindex="0"
+        role="link"
+      >
+        <img
+          src="https://picsum.photos/seed/kiaspire-singapore/1600/1100"
+          alt="Study in Singapore"
+        >
+      </div>
+
+      <div
+        class="dest-panel"
+        data-index="2"
+        data-url="uk.html"
+        tabindex="0"
+        role="link"
+      >
+        <img
+          src="https://picsum.photos/seed/kiaspire-uk/1600/1100"
+          alt="Study in the United Kingdom"
+        >
+      </div>
+
+      <div
+        class="dest-panel"
+        data-index="3"
+        data-url="australia.html"
+        tabindex="0"
+        role="link"
+      >
+        <img
+          src="https://picsum.photos/seed/kiaspire-australia/1600/1100"
+          alt="Study in Australia"
+        >
+      </div>
+
+      <div
+        class="dest-panel"
+        data-index="4"
+        data-url="canada.html"
+        tabindex="0"
+        role="link"
+      >
+        <img
+          src="https://picsum.photos/seed/kiaspire-canada/1600/1100"
+          alt="Study in Canada"
+        >
+      </div>
+
+      <div
+        class="dest-panel"
+        data-index="5"
+        data-url="us.html"
+        tabindex="0"
+        role="link"
+      >
+        <img
+          src="https://picsum.photos/seed/kiaspire-usa/1600/1100"
+          alt="Study in the United States"
+        >
+      </div>
+
+      <div class="dest-visual-scrim"></div>
+
+      <div class="dest-visual-label">
+        <span id="destLabelNum">01</span>
+        <span id="destLabelName">Dubai, UAE</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="container destinations-more">
+    <p class="destinations-more-text reveal" style="--d:0">Also placing students in <a href="countryPages/germany.html">Germany</a>, and a dozen other countries beyond this list — ask your counsellor about yours.</p>
+  </div>
+</section>
+
+<section class="section process" id="process">
+  <div class="container">
+    <p class="eyebrow reveal" style="--d:0">How We Work</p>
+    <h2 class="display process-title reveal" style="--d:1">A five-step process, the same for every student.</h2>
+    <div class="process-body">
+      <div class="process-line-track"><div class="process-line-fill" id="processLineFill"></div></div>
+      <div class="process-steps">
+        <div class="process-step"><span class="process-step-num">01</span><div><h3>Discovery Call</h3><p>A free 30-minute conversation about your academic record, budget, and what you actually want out of studying abroad.</p></div></div>
+        <div class="process-step"><span class="process-step-num">02</span><div><h3>Profile Evaluation</h3><p>We assess your transcripts, test scores, and extracurriculars honestly, and flag gaps early enough to fix them.</p></div></div>
+        <div class="process-step"><span class="process-step-num">03</span><div><h3>University Shortlist</h3><p>A working list of reach, match, and safety schools, built around fit and funding, not prestige alone.</p></div></div>
+        <div class="process-step"><span class="process-step-num">04</span><div><h3>Applications &amp; Visa</h3><p>Essays, recommendation strategy, financial documentation, and visa filing, managed to the actual deadlines.</p></div></div>
+        <div class="process-step"><span class="process-step-num">05</span><div><h3>Pre-Departure &amp; Beyond</h3><p>Housing, orientation, and a direct line to your counsellor for the first year on campus.</p></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section section--deep stories" id="stories">
+  <div class="container stories-grid">
+    <div class="stories-head">
+      <p class="eyebrow reveal" style="--d:0">Stories</p>
+      <h2 class="display reveal" style="--d:1">What families tell us <em>afterward.</em></h2>
+      <div class="stories-nav">
+        <button class="stories-arrow" id="storyPrev" aria-label="Previous story">←</button>
+        <button class="stories-arrow" id="storyNext" aria-label="Next story">→</button>
+      </div>
+    </div>
+    <div class="stories-slider" id="storiesSlider">
+      <div class="state-block">Loading stories…</div>
+    </div>
+  </div>
+</section>
+
+<section class="section section--pine cta-band" id="contact">
+  <div class="container cta-grid">
+    <div>
+      <p class="eyebrow eyebrow--light reveal" style="--d:0">Start Here</p>
+      <h2 class="display cta-title reveal" style="--d:1">Let's find out where you're headed.</h2>
+      <p class="cta-copy reveal" style="--d:2">Thirty minutes, no obligation. Bring your transcripts, your test scores, and a rough idea of where you'd like to end up — we'll do the rest.</p>
+    </div>
+    <div class="cta-actions reveal" style="--d:3">
+      <a href="register.html" class="btn btn-light">Book a Private Consultation</a>
+      <div class="cta-contact">
+        <span>hello@kiaspireabroad.com</span>
+        <span>+91 80 4567 1234</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer class="footer">
+  <div class="container footer-grid">
+    <div class="footer-brand">
+      <div class="nav-mark footer-mark">
+        <span class="nav-mark-text">
+          <img src="Logo.webp" alt="Logo" class="mark-icon">
+        </span>
+      </div>
+      <p class="footer-tagline">Independent study abroad counselling headquartered in Kolkata, working with students across India.</p>
+      <p class="footer-dpa">Dream <span>·</span> Plan <span>·</span> Achieve</p>
+    </div>
+    <div class="footer-col">
+      <p class="footer-heading">Explore</p>
+      <a href="about.html">About</a>
+      <a href="services.html">Services</a>
+      <a href="#destinations">Destinations</a>
+      <a href="stories.html">Stories</a>
+    </div>
+    <div class="footer-col">
+      <p class="footer-heading">Contact</p>
+      <a href="mailto:hello@kiaspireabroad.com">hello@kiaspireabroad.com</a>
+      <a href="tel:+918981572430">+91 89815 72430</a>
+      <span>Kolkata, India</span>
+    </div>
+    <div class="footer-col">
+      <p class="footer-heading">Follow</p>
+      <a href="#">Instagram</a>
+      <a href="#">LinkedIn</a>
+    </div>
+  </div>
+  <div class="container footer-bottom">
+    <span>© <span id="year"></span> Ki Aspire Abroad. All rights reserved.</span>
+    <span>Designed for ambitious students.</span>
+  </div>
+</footer>
+
+<script src="api.js"></script>
+<script src="script.js" defer></script>
+<script>
+(function(){
+  function escapeHtml(str){
+    var div = document.createElement('div');
+    div.textContent = str == null ? '' : String(str);
+    return div.innerHTML;
+  }
+
+  /* ---- Featured Services (first 3 from GET /api/services) ---- */
+  var servicesGrid = document.getElementById('homeServicesGrid');
+  var marks = ['01','02','03','04','05','06'];
+
+  function renderHomeServices(services){
+    var top = (services || []).slice(0, 3);
+    if(!top.length){
+      servicesGrid.innerHTML = '<div class="empty-state"><p class="empty-state-title">Services coming soon</p><p>Check back shortly, or get in touch directly.</p></div>';
+      return;
+    }
+    servicesGrid.innerHTML = top.map(function(s, i){
+      return '<div class="service-card reveal is-visible">' +
+        '<span class="service-card-mark">' + marks[i % marks.length] + '</span>' +
+        '<h3>' + escapeHtml(s.name) + '</h3>' +
+        '<p>' + escapeHtml(s.description) + '</p>' +
+        '</div>';
+    }).join('');
+  }
+
+  if(window.KiAspireAPI){
+    window.KiAspireAPI.getServices()
+      .then(renderHomeServices)
+      .catch(function(err){
+        console.error('getServices failed:', err);
+        servicesGrid.innerHTML = '<div class="empty-state"><p class="empty-state-title">Couldn\'t load services right now</p><p>Please refresh, or see our <a href="services.html" style="color:var(--brass-deep); font-weight:600;">full services page</a>.</p></div>';
+      });
+  }
+
+  /* ---- Stories slider (first 3 from GET /api/story) ---- */
+  var storiesSlider = document.getElementById('storiesSlider');
+
+  function renderHomeStories(stories){
+    var top = (stories || []).slice(0, 3);
+    if(!top.length){
+      storiesSlider.innerHTML = '<div class="state-block">Stories are on their way — check back soon.</div>';
+      return;
+    }
+    storiesSlider.innerHTML = top.map(function(s, i){
+      var quote = s.description || '';
+      return '<blockquote class="story' + (i === 0 ? ' is-active' : '') + '" data-index="' + i + '">' +
+        '<p class="story-quote">"' + escapeHtml(quote) + '"</p>' +
+        '<footer class="story-attr">' + escapeHtml(s.studentName) + ' — now at ' + escapeHtml(s.university) + (s.country ? ', ' + escapeHtml(s.country) : '') + '</footer>' +
+      '</blockquote>';
+    }).join('');
+    if(window.KiAspireReinitStories) window.KiAspireReinitStories();
+  }
+
+  if(window.KiAspireAPI){
+    window.KiAspireAPI.getStories()
+      .then(renderHomeStories)
+      .catch(function(err){
+        console.error('getStories failed:', err);
+        storiesSlider.innerHTML = '<div class="state-block">Couldn\'t load stories right now — see our <a href="stories.html" style="color:var(--brass-deep); font-weight:600;">stories page</a> instead.</div>';
+      });
+  }
+})();
+</script>
+</body>
+</html>

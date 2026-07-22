@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dashboard — Ki Aspire Abroad Admin</title>
+<meta name="robots" content="noindex, nofollow">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,300;0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400;1,6..72,500&family=Archivo:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../style.css">
+</head>
+<body class="admin-body">
+
+<div class="admin-mobile-bar">
+  <img src="../Logo.webp" alt="Ki Aspire Abroad">
+  <button class="admin-mobile-toggle" id="adminMobileToggle" aria-label="Open menu">☰</button>
+</div>
+<div class="admin-sidebar-scrim" id="adminSidebarScrim"></div>
+
+<div class="admin-shell">
+  <aside class="admin-sidebar" id="adminSidebar">
+    <div class="admin-sidebar-logo"><img src="../Logo.webp" alt="Ki Aspire Abroad" style="width:100%; height:auto;"></div>
+    <p class="admin-sidebar-tag">Admin Panel</p>
+    <nav class="admin-nav">
+      <a href="dashboard.html" class="is-active"><span class="admin-nav-icon">◆</span> Dashboard</a>
+      <a href="users.html"><span class="admin-nav-icon">◆</span> Manage Users</a>
+      <a href="services.html"><span class="admin-nav-icon">◆</span> Manage Services</a>
+      <a href="stories.html"><span class="admin-nav-icon">◆</span> Manage Stories</a>
+      <a href="profile.html"><span class="admin-nav-icon">◆</span> My Profile</a>
+    </nav>
+    <div class="admin-sidebar-footer">
+      <div class="admin-sidebar-admin"><strong id="sidebarAdminName">Admin</strong>Signed in</div>
+      <button class="admin-logout-btn" type="button" data-admin-logout>Log Out</button>
+    </div>
+  </aside>
+
+  <main class="admin-main">
+    <div class="admin-topbar">
+      <div>
+        <p class="eyebrow admin-eyebrow">Dashboard</p>
+        <h1 class="admin-title">Welcome back.</h1>
+      </div>
+      
+    </div>
+
+    
+    <div class="stat-grid" id="statGrid">
+      <div class="stat-card"><span class="stat-card-num" id="statUsers">—</span><p class="stat-card-label">Total Leads</p><a href="users.html" class="stat-card-link">Manage Users →</a></div>
+      <div class="stat-card"><span class="stat-card-num" id="statActiveUsers">—</span><p class="stat-card-label">Active Leads</p><a href="users.html" class="stat-card-link">Manage Users →</a></div>
+      <div class="stat-card"><span class="stat-card-num" id="statServices">—</span><p class="stat-card-label">Services Listed</p><a href="services.html" class="stat-card-link">Manage Services →</a></div>
+      <div class="stat-card"><span class="stat-card-num" id="statStories">—</span><p class="stat-card-label">Stories Published</p><a href="stories.html" class="stat-card-link">Manage Stories →</a></div>
+    </div>
+
+    <div class="admin-card">
+      <div class="table-toolbar">
+        <h2 class="modal-title" style="font-size:17px;">Recent Registrations</h2>
+        <a href="users.html" class="table-action">View all →</a>
+      </div>
+      <div class="table-scroll">
+        <table class="admin-table">
+          <thead><tr><th>Name</th><th>Email</th><th>Phone</th><th>Registered</th></tr></thead>
+          <tbody id="recentUsersBody">
+            <tr><td colspan="4" class="cell-muted">Loading…</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+
+
+<script src="../api.js"></script>
+<script src="admin.js"></script>
+<script>
+
+  function escapeHtml(str){
+    var div = document.createElement('div');
+    div.textContent = str == null ? '' : String(str);
+    return div.innerHTML;
+  }
+  function formatDate(iso){
+    if(!iso) return '—';
+    var d = new Date(iso);
+    if(isNaN(d.getTime())) return String(iso);
+    return d.toLocaleDateString('en-IN', { day:'numeric', month:'short', year:'numeric' });
+  }
+
+  Promise.all([
+    window.KiAspireAPI.getAdminUsers().catch(function(e){ console.error('getAdminUsers failed:', e); return []; }),
+    window.KiAspireAPI.getAdminServices().catch(function(e){ console.error('getAdminServices failed:', e); return []; }),
+    window.KiAspireAPI.getAdminStories().catch(function(e){ console.error('getAdminStories failed:', e); return []; })
+  ]).then(function(results){
+    var users = results[0] || [], services = results[1] || [], stories = results[2] || [];
+
+    document.getElementById('statUsers').textContent = users.length;
+    document.getElementById('statActiveUsers').textContent = users.filter(function(u){ return u.isActive === true; }).length;
+    document.getElementById('statServices').textContent = services.length;
+    document.getElementById('statStories').textContent = stories.length;
+
+    var recent = users.slice().sort(function(a,b){
+      return new Date(b.createdAt || 0) - new Date(a.createdAt || 0);
+    }).slice(0, 5);
+
+    var body = document.getElementById('recentUsersBody');
+    if(!recent.length){
+      body.innerHTML = '<tr><td colspan="4" class="cell-muted">No registrations yet.</td></tr>';
+      return;
+    }
+    body.innerHTML = recent.map(function(u){
+      return '<tr>' +
+        '<td class="cell-primary">' + escapeHtml(u.name) + '</td>' +
+        '<td class="cell-muted">' + escapeHtml(u.email) + '</td>' +
+        '<td class="cell-muted">' + escapeHtml(u.phone) + '</td>' +
+        '<td class="cell-muted">' + formatDate(u.createdAt) + '</td>' +
+      '</tr>';
+    }).join('');
+  });
+
+</script>
+</body>
+</html>
