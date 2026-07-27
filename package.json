@@ -1,20 +1,21 @@
 {
   "name": "kiaspire",
   "version": "1.0.0",
-  "description": "Landing Page for Study Abroad Counselling",
-  "homepage": "https://github.com/Code-Knight-Debjit/KiAspire-Aabroad#readme",
+  "description": "Landing Page for Study Aabroad Counselling",
+  "homepage": "https://github.com/Code-Knight-Debjit/KiAspire-AAabroad#readme",
   "bugs": {
-    "url": "https://github.com/Code-Knight-Debjit/KiAspire-Aabroad/issues"
+    "url": "https://github.com/Code-Knight-Debjit/KiAspire-AAabroad/issues"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Code-Knight-Debjit/KiAspire-Aabroad.git"
+    "url": "git+https://github.com/Code-Knight-Debjit/KiAspire-AAabroad.git"
   },
   "license": "ISC",
   "author": "Debjit Paul, Himanshu Kumar",
   "type": "commonjs",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node app.js"
   }
 }

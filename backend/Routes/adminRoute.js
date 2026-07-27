@@ -9,6 +9,8 @@ const {
   deleteUser,
 } = require("../controllers/adminController");
 
+const { listPipelineStages } = require("../controllers/applicationController");
+
 const { protect, adminOnly } = require("../middlewares/authMiddleware");
 
 const router = express.Router();
@@ -18,6 +20,8 @@ router.post("/login", adminLogin);
 
 // Protected admin routes
 router.get("/profile", protect, adminOnly, getAdminProfile);
+
+router.get("/pipeline-stages", protect, adminOnly, listPipelineStages);
 
 router.get("/users", protect, adminOnly, getAllUsers);
 

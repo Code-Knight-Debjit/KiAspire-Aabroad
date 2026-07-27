@@ -1,65 +1,95 @@
-const mongoose = require("mongoose");
+const crypto = require("crypto");
+const db = require("../db/knex");
 
-const userSchema = new mongoose.Schema(
-  {
-    name: {
-      type: String,
-      required: true,
-      trim: true,
-    },
+const TABLE = "users";
 
-    email: {
-      type: String,
-      required: true,
-      unique: true,
-      lowercase: true,
-      trim: true,
-    },
+// Never send password_hash back over the API. There's no Mongoose-style
+// toJSON transform in a plain knex row, so every controller that returns a
+// user must run it through this first.
+function toPublicUser(row) {
+  if (!row) return row;
+  const { password_hash, ...rest } = row;
+  return rest;
+}
 
-    phone: {
-      type: String,
-      required: true,
-      unique: true,
-      trim: true,
-    },
+function findByEmailOrPhone(email, phone, trx = db) {
+  return trx(TABLE).where({ email }).orWhere({ phone }).first();
+}
 
-    // FIX: select:false so password hashes are never returned by default.
-    // Anywhere that actually needs it (e.g. admin login) must explicitly
-    // call .select("+password").
-    password: {
-      type: String,
-      minlength: 6,
-      select: false,
-    },
+function findById(id) {
+  return db(TABLE).where({ id }).first();
+}
 
-    role: {
-      type: String,
-      enum: ["user", "admin", "counsellor"],
-      default: "user",
-    },
+function findByIdAndRole(id, role) {
+  return db(TABLE).where({ id, role }).first();
+}
 
-    isActive: {
-      type: Boolean,
-      default: true,
-    },
+function findByEmailAndRole(email, role) {
+  return db(TABLE).where({ email, role }).first();
+}
 
-    lastLogin: {
-      type: Date,
-      default: null,
-    },
-  },
-  {
-    timestamps: true,
-  }
-);
+async function create({ name, email, phone, passwordHash, role }, trx = db) {
+  const id = crypto.randomUUID();
 
-// FIX (defense in depth): even if some future query explicitly selects
-// +password, strip it before the document is ever serialized to JSON.
-userSchema.set("toJSON", {
-  transform: (_doc, ret) => {
-    delete ret.password;
-    return ret;
-  },
-});
+  const [row] = await trx(TABLE)
+    .insert({
+      id,
+      name,
+      email,
+      phone,
+      password_hash: passwordHash || null,
+      role: role || "student",
+    })
+    .returning("*");
 
-module.exports = mongoose.model("User", userSchema);
+  return row;
+}
+
+async function setPassword(id, passwordHash, trx = db) {
+  const [row] = await trx(TABLE)
+    .where({ id })
+    .update({ password_hash: passwordHash, updated_at: trx.fn.now() })
+    .returning("*");
+
+  return row;
+}
+
+async function updateLastLogin(id) {
+  const [row] = await db(TABLE)
+    .where({ id })
+    .update({ last_login: db.fn.now(), updated_at: db.fn.now() })
+    .returning("*");
+
+  return row;
+}
+
+function listByRole(role) {
+  return db(TABLE).where({ role }).orderBy("created_at", "desc");
+}
+
+async function updateIsActive(id, role, isActive) {
+  const [row] = await db(TABLE)
+    .where({ id, role })
+    .update({ is_active: isActive, updated_at: db.fn.now() })
+    .returning("*");
+
+  return row;
+}
+
+function deleteByIdAndRole(id, role) {
+  return db(TABLE).where({ id, role }).del();
+}
+
+module.exports = {
+  toPublicUser,
+  findByEmailOrPhone,
+  findById,
+  findByIdAndRole,
+  findByEmailAndRole,
+  create,
+  setPassword,
+  updateLastLogin,
+  listByRole,
+  updateIsActive,
+  deleteByIdAndRole,
+};
