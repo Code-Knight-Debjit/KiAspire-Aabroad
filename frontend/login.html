@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Our Services — KiAspire Aabroad</title>
-<meta name="description" content="Every way we help students get from application to visa in hand — university shortlisting, essay strategy, visa filing, and more.">
+<title>Log In — KiAspire Aabroad</title>
+<meta name="description" content="Log in to track your application progress.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,300;0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400;1,6..72,500&family=Archivo:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -41,44 +41,37 @@
   <a href="study-abroad-for-free.html">Study Free</a>
   <a href="index.html#destinations">Destinations</a>
   <a href="stories.html">Stories</a>
-  <a href="login.html">Log In</a>
   <a href="register.html" class="mobile-menu-cta">Get Started</a>
 </div>
 
 <header class="page-hero">
   <div class="container">
-    <p class="eyebrow eyebrow--light reveal" style="--d:0">Our Services</p>
-    <h1 class="page-hero-title reveal" style="--d:1">Everything between <em>"I want to study Aabroad"</em> and a visa in hand.</h1>
-    <p class="page-hero-sub reveal" style="--d:2">Every service below is handled by your own counsellor — not routed through a call centre or handed off between departments.</p>
+    <p class="eyebrow eyebrow--light reveal" style="--d:0">Welcome Back</p>
+    <h1 class="page-hero-title reveal" style="--d:1">Log in to track your <em>progress.</em></h1>
+    <p class="page-hero-sub reveal" style="--d:2">See where your application stands, updated by your counsellor as it moves forward.</p>
   </div>
 </header>
 
 <section class="section">
-  <div class="container">
-    <div class="services-grid" id="servicesGrid">
-      <div class="skeleton skeleton-card"></div>
-      <div class="skeleton skeleton-card"></div>
-      <div class="skeleton skeleton-card"></div>
-      <div class="skeleton skeleton-card"></div>
-      <div class="skeleton skeleton-card"></div>
-      <div class="skeleton skeleton-card"></div>
-    </div>
-  </div>
-</section>
-
-<section class="section section--pine cta-band" id="contact">
-  <div class="container cta-grid">
-    <div>
-      <p class="eyebrow eyebrow--light reveal" style="--d:0">Start Here</p>
-      <h2 class="display cta-title reveal" style="--d:1">Not sure which service you need?</h2>
-      <p class="cta-copy reveal" style="--d:2">That's what the first call is for. Tell us where you're stuck and we'll tell you honestly what you actually need.</p>
-    </div>
-    <div class="cta-actions reveal" style="--d:3">
-      <a href="register.html?service=book-a-consultation" class="btn btn-light">Book a Private Consultation</a>
-      <div class="cta-contact">
-        <span>hello@kiaspireAabroad.com</span>
-        <span>+91 80 4567 1234</span>
-      </div>
+  <div class="container" style="max-width:480px;">
+    <div class="form-card reveal is-visible" style="max-width:none;">
+      <div class="form-status" id="formStatus"></div>
+      <form id="loginForm" novalidate>
+        <div class="form-field" id="fieldEmail">
+          <label for="email">Email address</label>
+          <input type="email" id="email" name="email" autocomplete="username" placeholder="you@example.com" required>
+          <span class="form-error">Please enter a valid email address.</span>
+        </div>
+        <div class="form-field" id="fieldPassword">
+          <label for="password">Password</label>
+          <input type="password" id="password" name="password" autocomplete="current-password" placeholder="••••••••" required>
+          <span class="form-error">Please enter your password.</span>
+        </div>
+        <button type="submit" class="btn btn-dark" id="submitBtn" style="margin-top:8px;">Log In</button>
+      </form>
+      <p style="margin-top:22px; font-size:13.5px; color:var(--ink-soft); text-align:center;">
+        New here? <a href="register.html" style="color:var(--blue-deep); font-weight:600;">Get started</a> instead.
+      </p>
     </div>
   </div>
 </section>
@@ -122,43 +115,47 @@
 <script src="script.js" defer></script>
 <script>
 (function(){
-  var grid = document.getElementById('servicesGrid');
-
-  // A short rotation of display marks for cards — purely decorative,
-  // cycles regardless of how many services come back.
-  var marks = ['01','02','03','04','05','06','07','08'];
-
-  function escapeHtml(str){
-    var div = document.createElement('div');
-    div.textContent = str == null ? '' : String(str);
-    return div.innerHTML;
+  if(window.KiAspireAPI && window.KiAspireAPI.isStudentLoggedIn()){
+    window.location.href = 'dashboard.html';
+    return;
   }
 
-  function renderServices(services){
-    if(!services || !services.length){
-      grid.innerHTML = '<div class="empty-state"><p class="empty-state-title">No services listed yet</p><p>Check back soon, or get in touch and we\'ll talk through it directly.</p></div>';
-      return;
-    }
-    grid.innerHTML = services.map(function(s, i){
-      return '<div class="service-card reveal is-visible">' +
-        '<span class="service-card-mark">' + (marks[i % marks.length]) + '</span>' +
-        '<h3>' + escapeHtml(s.name) + '</h3>' +
-        '<p>' + escapeHtml(s.description) + '</p>' +
-        '</div>';
-    }).join('');
-  }
+  var form = document.getElementById('loginForm');
+  var statusEl = document.getElementById('formStatus');
+  var submitBtn = document.getElementById('submitBtn');
+  var emailField = document.getElementById('fieldEmail');
+  var passwordField = document.getElementById('fieldPassword');
 
-  function renderError(){
-    grid.innerHTML = '<div class="empty-state"><p class="empty-state-title">Couldn\'t load services right now</p><p>Please refresh the page, or reach out to us directly at hello@kiaspireAabroad.com.</p></div>';
-  }
+  document.getElementById('email').addEventListener('input', function(){ emailField.classList.remove('has-error'); });
+  document.getElementById('password').addEventListener('input', function(){ passwordField.classList.remove('has-error'); });
 
-  if(window.KiAspireAPI){
-    window.KiAspireAPI.getServices()
-      .then(renderServices)
-      .catch(function(err){ console.error('getServices failed:', err); renderError(); });
-  } else {
-    renderError();
-  }
+  form.addEventListener('submit', function(e){
+    e.preventDefault();
+    statusEl.className = 'form-status';
+
+    var email = document.getElementById('email').value.trim();
+    var password = document.getElementById('password').value;
+
+    var ok = true;
+    if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){ emailField.classList.add('has-error'); ok = false; }
+    if(!password){ passwordField.classList.add('has-error'); ok = false; }
+    if(!ok) return;
+
+    submitBtn.disabled = true;
+    submitBtn.textContent = 'Logging in…';
+
+    window.KiAspireAPI.studentLogin(email, password)
+      .then(function(){
+        window.location.href = 'dashboard.html';
+      })
+      .catch(function(err){
+        console.error('studentLogin failed:', err);
+        statusEl.className = 'form-status is-visible is-error';
+        statusEl.textContent = (err && err.message) || 'Something went wrong. Please try again.';
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'Log In';
+      });
+  });
 })();
 </script>
 </body>

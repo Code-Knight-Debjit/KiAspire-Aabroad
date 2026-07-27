@@ -1,5 +1,6 @@
 require("dotenv").config();
 
+const path = require("path");
 const express = require("express");
 const cors = require("cors");
 
@@ -47,9 +48,11 @@ app.use("/api/story", storyRoutes);
 app.use("/api/free-study", freeStudyRoutes);
 app.use("/api/site-settings", siteSettingRoutes);
 
-app.get("/", (req, res) => {
-  res.send("API is running...");
-});
+// Serves the whole static frontend from this same process/port — the hard
+// hosting constraint in CLAUDE.md (single Node process, no separate static
+// server). Registered after /api routes so a route typo there 404s instead
+// of silently falling through to the static handler.
+app.use(express.static(path.join(__dirname, "..", "frontend")));
 
 const PORT = process.env.PORT || 3000;
 

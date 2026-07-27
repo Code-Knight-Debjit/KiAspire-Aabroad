@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Our Services — KiAspire Aabroad</title>
-<meta name="description" content="Every way we help students get from application to visa in hand — university shortlisting, essay strategy, visa filing, and more.">
+<title>Study Abroad for Free — KiAspire Aabroad</title>
+<meta name="description" content="Country write-up on studying at public universities for free or near-free tuition.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,300;0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400;1,6..72,500&family=Archivo:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -41,27 +41,21 @@
   <a href="study-abroad-for-free.html">Study Free</a>
   <a href="index.html#destinations">Destinations</a>
   <a href="stories.html">Stories</a>
-  <a href="login.html">Log In</a>
   <a href="register.html" class="mobile-menu-cta">Get Started</a>
 </div>
 
 <header class="page-hero">
   <div class="container">
-    <p class="eyebrow eyebrow--light reveal" style="--d:0">Our Services</p>
-    <h1 class="page-hero-title reveal" style="--d:1">Everything between <em>"I want to study Aabroad"</em> and a visa in hand.</h1>
-    <p class="page-hero-sub reveal" style="--d:2">Every service below is handled by your own counsellor — not routed through a call centre or handed off between departments.</p>
+    <a href="study-abroad-for-free.html" class="hero-breadcrumb reveal is-visible"><span class="hero-breadcrumb-arrow" aria-hidden="true">←</span> All Countries</a>
+    <p class="eyebrow eyebrow--light reveal is-visible" style="--d:0">Study Abroad for Free</p>
+    <h1 class="page-hero-title reveal is-visible" id="countryTitle" style="--d:1">Loading…</h1>
   </div>
 </header>
 
 <section class="section">
   <div class="container">
-    <div class="services-grid" id="servicesGrid">
-      <div class="skeleton skeleton-card"></div>
-      <div class="skeleton skeleton-card"></div>
-      <div class="skeleton skeleton-card"></div>
-      <div class="skeleton skeleton-card"></div>
-      <div class="skeleton skeleton-card"></div>
-      <div class="skeleton skeleton-card"></div>
+    <div class="story-content" id="countryContent" style="max-width:760px;">
+      <p>Loading…</p>
     </div>
   </div>
 </section>
@@ -70,11 +64,11 @@
   <div class="container cta-grid">
     <div>
       <p class="eyebrow eyebrow--light reveal" style="--d:0">Start Here</p>
-      <h2 class="display cta-title reveal" style="--d:1">Not sure which service you need?</h2>
-      <p class="cta-copy reveal" style="--d:2">That's what the first call is for. Tell us where you're stuck and we'll tell you honestly what you actually need.</p>
+      <h2 class="display cta-title reveal" style="--d:1">See if this fits your plan.</h2>
+      <p class="cta-copy reveal" style="--d:2">Thirty minutes, no obligation — we'll walk through eligibility, costs, and timelines together.</p>
     </div>
     <div class="cta-actions reveal" style="--d:3">
-      <a href="register.html?service=book-a-consultation" class="btn btn-light">Book a Private Consultation</a>
+      <a href="register.html?service=study-abroad" class="btn btn-light">Book a Private Consultation</a>
       <div class="cta-contact">
         <span>hello@kiaspireAabroad.com</span>
         <span>+91 80 4567 1234</span>
@@ -96,9 +90,9 @@
       <p class="footer-heading">Explore</p>
       <a href="about.html">About</a>
       <a href="services.html">Services</a>
-      <a href="study-abroad-for-free.html">Study Abroad for Free</a>
       <a href="index.html#destinations">Destinations</a>
       <a href="stories.html">Stories</a>
+      <a href="login.html">Log In</a>
     </div>
     <div class="footer-col">
       <p class="footer-heading">Contact</p>
@@ -122,42 +116,46 @@
 <script src="script.js" defer></script>
 <script>
 (function(){
-  var grid = document.getElementById('servicesGrid');
-
-  // A short rotation of display marks for cards — purely decorative,
-  // cycles regardless of how many services come back.
-  var marks = ['01','02','03','04','05','06','07','08'];
-
   function escapeHtml(str){
     var div = document.createElement('div');
     div.textContent = str == null ? '' : String(str);
     return div.innerHTML;
   }
 
-  function renderServices(services){
-    if(!services || !services.length){
-      grid.innerHTML = '<div class="empty-state"><p class="empty-state-title">No services listed yet</p><p>Check back soon, or get in touch and we\'ll talk through it directly.</p></div>';
-      return;
-    }
-    grid.innerHTML = services.map(function(s, i){
-      return '<div class="service-card reveal is-visible">' +
-        '<span class="service-card-mark">' + (marks[i % marks.length]) + '</span>' +
-        '<h3>' + escapeHtml(s.name) + '</h3>' +
-        '<p>' + escapeHtml(s.description) + '</p>' +
-        '</div>';
-    }).join('');
+  var params = new URLSearchParams(window.location.search);
+  var slug = params.get('slug');
+
+  var titleEl = document.getElementById('countryTitle');
+  var contentEl = document.getElementById('countryContent');
+
+  function showNotFound(message){
+    titleEl.textContent = 'Country not found';
+    contentEl.innerHTML = '<p>' + escapeHtml(message || "We couldn't find that country. It may have been moved or removed.") + ' <a href="study-abroad-for-free.html" style="color:var(--brass-deep); font-weight:600;">Browse all countries →</a></p>';
   }
 
-  function renderError(){
-    grid.innerHTML = '<div class="empty-state"><p class="empty-state-title">Couldn\'t load services right now</p><p>Please refresh the page, or reach out to us directly at hello@kiaspireAabroad.com.</p></div>';
+  function renderCountry(country){
+    document.title = country.countryName + ' — Study Abroad for Free — KiAspire Aabroad';
+    titleEl.textContent = country.countryName;
+
+    // contentHtml is rendered from admin-authored Markdown and sanitized
+    // server-side before it ever reaches us — safe to insert directly.
+    contentEl.innerHTML = country.contentHtml || '<p>Full write-up coming soon.</p>';
   }
 
-  if(window.KiAspireAPI){
-    window.KiAspireAPI.getServices()
-      .then(renderServices)
-      .catch(function(err){ console.error('getServices failed:', err); renderError(); });
+  if(!slug){
+    showNotFound('No country was specified.');
+  } else if(window.KiAspireAPI){
+    window.KiAspireAPI.getFreeStudyCountry(slug)
+      .then(function(country){
+        if(!country){ showNotFound(); return; }
+        renderCountry(country);
+      })
+      .catch(function(err){
+        console.error('getFreeStudyCountry failed:', err);
+        showNotFound(err && err.status === 404 ? null : 'Something went wrong loading this page.');
+      });
   } else {
-    renderError();
+    showNotFound('Something went wrong loading this page.');
   }
 })();
 </script>
