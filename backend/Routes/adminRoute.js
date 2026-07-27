@@ -2,6 +2,7 @@ const express = require("express");
 
 const {
   adminLogin,
+  logoutAdmin,
   getAdminProfile,
   getAllUsers,
   getUserById,
@@ -17,6 +18,7 @@ const router = express.Router();
 
 // Public admin route
 router.post("/login", adminLogin);
+router.post("/logout", logoutAdmin);
 
 // Protected admin routes
 router.get("/profile", protect, adminOnly, getAdminProfile);

@@ -4,6 +4,7 @@ const validator = require("validator");
 const userModel = require("../models/userModel");
 const generateToken = require("../utils/token");
 const { rowToCamel, rowsToCamel } = require("../utils/caseConvert");
+const { setAuthCookie, clearAuthCookie } = require("../utils/authCookie");
 
 // Admin login
 // POST /api/admin/login
@@ -55,6 +56,7 @@ const adminLogin = async (req, res) => {
     const updatedAdmin = await userModel.updateLastLogin(admin.id);
 
     const token = generateToken(updatedAdmin.id, updatedAdmin.role);
+    setAuthCookie(req, res, "admin_token", token);
 
     return res.status(200).json({
       success: true,
@@ -70,6 +72,19 @@ const adminLogin = async (req, res) => {
       message: "Server error. Please try again.",
     });
   }
+};
+
+// POST /api/admin/logout
+// Clears the httpOnly page-guard cookie set on login. The bearer token
+// itself can't be revoked server-side (stateless JWT) — the frontend also
+// drops it from localStorage; this only needs to handle the cookie half.
+const logoutAdmin = (req, res) => {
+  clearAuthCookie(res, "admin_token");
+
+  return res.status(200).json({
+    success: true,
+    message: "Logged out successfully",
+  });
 };
 
 // Get logged-in admin profile
@@ -234,6 +249,7 @@ const deleteUser = async (req, res) => {
 
 module.exports = {
   adminLogin,
+  logoutAdmin,
   getAdminProfile,
   getAllUsers,
   getUserById,

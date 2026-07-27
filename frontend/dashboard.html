@@ -94,8 +94,9 @@
   }
 
   function doLogout(){
-    window.KiAspireAPI.studentLogout();
-    window.location.href = 'login.html';
+    window.KiAspireAPI.studentLogout().then(function(){
+      window.location.href = 'login.html';
+    });
   }
   document.getElementById('logoutBtn').addEventListener('click', doLogout);
   document.getElementById('mobileLogoutBtn').addEventListener('click', function(e){ e.preventDefault(); doLogout(); });

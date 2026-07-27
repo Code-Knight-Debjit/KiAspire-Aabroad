@@ -3,9 +3,11 @@ require("dotenv").config();
 const path = require("path");
 const express = require("express");
 const cors = require("cors");
+const cookieParser = require("cookie-parser");
 
 const db = require("./db/knex");
 const createDefaultAdmin = require("./utils/defaultAdmin");
+const { guardStudentPage, guardAdminPage } = require("./middlewares/pageGuard");
 
 const userRoutes = require("./Routes/userRoute");
 const adminRoutes = require("./Routes/adminRoute");
@@ -31,6 +33,7 @@ db.raw("select 1")
 
 // Middleware
 app.use(express.json());
+app.use(cookieParser());
 app.use(
   cors({
     origin: "*",
@@ -47,6 +50,14 @@ app.use("/api/services", serviceRoutes);
 app.use("/api/story", storyRoutes);
 app.use("/api/free-study", freeStudyRoutes);
 app.use("/api/site-settings", siteSettingRoutes);
+
+// Server-side page guards — must run before express.static, otherwise an
+// unauthenticated request could reach these HTML shells directly. The
+// actual data on these pages still only ever comes from the bearer-token
+// protected API routes above; this just stops the shell itself (and a
+// same-session admin.js/dashboard script) from loading pre-login.
+app.get("/dashboard.html", guardStudentPage);
+app.use("/admin", guardAdminPage);
 
 // Serves the whole static frontend from this same process/port — the hard
 // hosting constraint in CLAUDE.md (single Node process, no separate static

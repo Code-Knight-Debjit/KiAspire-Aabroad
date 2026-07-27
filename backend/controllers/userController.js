@@ -10,6 +10,7 @@ const applicationModel = require("../models/applicationModel");
 const generateToken = require("../utils/token");
 const { validateFieldValues } = require("../utils/validateFieldValues");
 const { rowToCamel, rowsToCamel } = require("../utils/caseConvert");
+const { setAuthCookie, clearAuthCookie } = require("../utils/authCookie");
 
 function validateContactFields(name, email, phone) {
   if (!name || !email || !phone) {
@@ -161,6 +162,7 @@ const registerStudent = async (req, res) => {
     });
 
     const token = generateToken(result.user.id, result.user.role);
+    setAuthCookie(req, res, "student_token", token);
 
     return res.status(201).json({
       success: true,
@@ -245,6 +247,7 @@ const loginStudent = async (req, res) => {
     await userModel.updateLastLogin(user.id);
 
     const token = generateToken(user.id, user.role);
+    setAuthCookie(req, res, "student_token", token);
 
     return res.status(200).json({
       success: true,
@@ -260,6 +263,20 @@ const loginStudent = async (req, res) => {
       message: "Server error. Please try again.",
     });
   }
+};
+
+// POST /api/user/logout
+// Clears the httpOnly page-guard cookie set on login/register. The bearer
+// token itself can't be revoked server-side (stateless JWT), so the
+// frontend also drops it from localStorage — this only needs to handle
+// the cookie half.
+const logoutStudent = (req, res) => {
+  clearAuthCookie(res, "student_token");
+
+  return res.status(200).json({
+    success: true,
+    message: "Logged out successfully",
+  });
 };
 
 // GET /api/user/dashboard
@@ -306,5 +323,6 @@ const getMyDashboard = async (req, res) => {
 module.exports = {
   registerStudent,
   loginStudent,
+  logoutStudent,
   getMyDashboard,
 };

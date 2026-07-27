@@ -231,6 +231,18 @@ destPanels.forEach(makeDestinationClickable);
   var introEnded = false;
   var textFired = false;
 
+  // Once per browser session, not once ever — sessionStorage clears when
+  // the tab/window closes, so returning later (or in a new tab) plays the
+  // intro again, but reloading or re-visiting the homepage within the same
+  // session won't replay it.
+  var INTRO_SESSION_KEY = 'kiaspireIntroShown';
+  var introAlreadySeenThisSession = false;
+  try {
+    introAlreadySeenThisSession = sessionStorage.getItem(INTRO_SESSION_KEY) === '1';
+  } catch (e) {
+    introAlreadySeenThisSession = false;
+  }
+
   function revealHeroText(){
     if(textFired) return;
     textFired = true;
@@ -242,6 +254,7 @@ destPanels.forEach(makeDestinationClickable);
   function endIntro(){
     if(introEnded) return;
     introEnded = true;
+    try { sessionStorage.setItem(INTRO_SESSION_KEY, '1'); } catch (e) {}
     document.documentElement.style.overflow = '';
     if(introOverlay){
       introOverlay.classList.add('is-done');
@@ -251,7 +264,7 @@ destPanels.forEach(makeDestinationClickable);
     revealHeroText();
   }
 
-  var canRunIntro = !reduceMotion && coverCanvas && planeCanvas && coverCanvas.getContext;
+  var canRunIntro = !reduceMotion && !introAlreadySeenThisSession && coverCanvas && planeCanvas && coverCanvas.getContext;
 
   if(!canRunIntro){
     if(introOverlay) introOverlay.style.display = 'none';

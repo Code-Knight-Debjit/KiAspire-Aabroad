@@ -19,8 +19,9 @@
     var logoutBtns = document.querySelectorAll('[data-admin-logout]');
     logoutBtns.forEach(function (btn) {
       btn.addEventListener('click', function () {
-        window.KiAspireAPI.adminLogout();
-        window.location.href = 'login.html';
+        window.KiAspireAPI.adminLogout().then(function () {
+          window.location.href = 'login.html';
+        });
       });
     });
 

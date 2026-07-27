@@ -394,8 +394,20 @@
     return data;
   }
 
-  function studentLogout() {
+  // Clears the localStorage token immediately (stops Authorization-header
+  // API calls right away) and also asks the server to clear the httpOnly
+  // page-guard cookie — without that second part, a still-valid, unexpired
+  // JWT sitting in the cookie would keep letting this browser reach
+  // dashboard.html even after "logging out" client-side. Awaited by the
+  // caller before navigating away, so the cookie clear actually completes.
+  async function studentLogout() {
     clearStudentToken();
+
+    try {
+      await request('/user/logout', { method: 'POST' });
+    } catch (error) {
+      console.error('studentLogout request failed:', error);
+    }
   }
 
   // GET /api/user/dashboard
@@ -427,8 +439,16 @@
     return data;
   }
 
-  function adminLogout() {
+  // See studentLogout above for why this also calls the server (clearing
+  // the httpOnly admin_token cookie, not just localStorage).
+  async function adminLogout() {
     clearToken();
+
+    try {
+      await request('/admin/logout', { method: 'POST' });
+    } catch (error) {
+      console.error('adminLogout request failed:', error);
+    }
   }
 
   // GET /api/admin/profile
