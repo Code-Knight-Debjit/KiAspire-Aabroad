@@ -217,6 +217,36 @@ having been granted privileges on the database).
 
 ---
 
+## Troubleshooting: admin login rejects the correct password
+
+If `/admin/login.html` keeps returning "Incorrect email or password" with
+credentials you know are right, check the app log after a restart for:
+
+```
+Default admin email normalized: "Admin@Foo.com" -> "admin@foo.com"
+```
+
+That line means you hit the case-mismatch bug: `users.email` is plain
+`text`, not `citext` (see `ARCHITECTURE.md` 6b), so the app's convention is
+that emails are always lowercased before they reach the database. The
+default-admin seeder used to store `ADMIN_EMAIL` verbatim, so any capital
+letter or stray space in the cPanel env-var value produced a row that the
+login lookup — which does lowercase — could never match. `utils/defaultAdmin.js`
+now normalizes on write and repairs an existing mis-cased row on boot, so a
+single **Restart** in Setup Node.js App fixes it. Log in as normal
+afterwards; the address is accepted in any casing.
+
+If instead you see:
+
+```
+Skipping default admin: ADMIN_EMAIL, ADMIN_PASSWORD, ADMIN_NAME and ADMIN_PHONE must all be set.
+```
+
+one of the four `ADMIN_*` variables from Step 3 is missing or empty — no
+admin account was ever created. Fill it in and restart.
+
+---
+
 ## After deployment
 
 - The default admin account (Step 3's `ADMIN_*` values) is how you first

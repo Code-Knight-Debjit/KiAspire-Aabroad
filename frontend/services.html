@@ -77,7 +77,7 @@
       <a href="register.html?service=book-a-consultation" class="btn btn-light">Book a Private Consultation</a>
       <div class="cta-contact">
         <span>hello@kiaspireAabroad.com</span>
-        <span>+91 80 4567 1234</span>
+        <span>+91 98316 31352</span>
       </div>
     </div>
   </div>
@@ -103,7 +103,7 @@
     <div class="footer-col">
       <p class="footer-heading">Contact</p>
       <a href="mailto:hello@kiaspireAabroad.com">hello@kiaspireAabroad.com</a>
-      <a href="tel:+918981572430">+91 89815 72430</a>
+      <a href="tel:+919831631352">+91 98316 31352</a>
       <span>Kolkata, India</span>
     </div>
     <div class="footer-col">
@@ -134,17 +134,32 @@
     return div.innerHTML;
   }
 
+  // Services with their own dedicated page (CLAUDE.md Phase 7 — every
+  // service needs a real URL, not just a card here). Services not listed
+  // (Study Abroad routes via the destinations scroller / country pages,
+  // Book a Consultation redirects on registration, and Career Counselling /
+  // Loan Assistance have no dedicated page requested) stay plain cards.
+  var servicePages = {
+    'visa-services': 'visa-services.html',
+    'test-prep': 'test-prep.html',
+    'foreign-language-training': 'language-classes.html'
+  };
+
   function renderServices(services){
     if(!services || !services.length){
       grid.innerHTML = '<div class="empty-state"><p class="empty-state-title">No services listed yet</p><p>Check back soon, or get in touch and we\'ll talk through it directly.</p></div>';
       return;
     }
     grid.innerHTML = services.map(function(s, i){
-      return '<div class="service-card reveal is-visible">' +
+      var page = servicePages[s.slug];
+      var tag = page ? 'a' : 'div';
+      var hrefAttr = page ? ' href="' + escapeHtml(page) + '"' : '';
+      return '<' + tag + ' class="service-card reveal is-visible"' + hrefAttr + (page ? ' style="display:block;"' : '') + '>' +
         '<span class="service-card-mark">' + (marks[i % marks.length]) + '</span>' +
         '<h3>' + escapeHtml(s.name) + '</h3>' +
         '<p>' + escapeHtml(s.description) + '</p>' +
-        '</div>';
+        (page ? '<span class="hero-link" style="margin-top:14px; color:var(--brass-deep);">Learn more <span class="hero-link-arrow">→</span></span>' : '') +
+        '</' + tag + '>';
     }).join('');
   }
 

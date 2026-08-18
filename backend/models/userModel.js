@@ -28,6 +28,27 @@ function findByEmailAndRole(email, role) {
   return db(TABLE).where({ email, role }).first();
 }
 
+// Same lookup, but case-insensitive. Emails are always stored lowercased
+// (ARCHITECTURE.md 6b — we lean on that app-layer convention instead of the
+// citext extension, which shared hosting may not permit), so this is only
+// for finding a row written before that convention was enforced everywhere.
+// Callers are expected to pass an already-lowercased email.
+function findByEmailInsensitiveAndRole(email, role) {
+  return db(TABLE)
+    .whereRaw("lower(email) = ?", [email])
+    .andWhere({ role })
+    .first();
+}
+
+async function updateEmail(id, email) {
+  const [row] = await db(TABLE)
+    .where({ id })
+    .update({ email, updated_at: db.fn.now() })
+    .returning("*");
+
+  return row;
+}
+
 async function create({ name, email, phone, passwordHash, role }, trx = db) {
   const id = crypto.randomUUID();
 
@@ -86,8 +107,10 @@ module.exports = {
   findById,
   findByIdAndRole,
   findByEmailAndRole,
+  findByEmailInsensitiveAndRole,
   create,
   setPassword,
+  updateEmail,
   updateLastLogin,
   listByRole,
   updateIsActive,

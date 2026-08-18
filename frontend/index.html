@@ -92,6 +92,12 @@
   </div>
 </section>
 
+<section class="logo-marquee-band" aria-label="Partner and reference universities">
+  <div class="logo-marquee-track" id="homeLogoTrack">
+    <div class="logo-marquee-group"><span class="logo-badge-name">Loading universities…</span></div>
+  </div>
+</section>
+
 <section class="section approach" id="approach">
   <div class="container approach-grid">
     <div class="approach-text">
@@ -148,56 +154,51 @@
     </p>
 
     <h2 class="display destinations-title reveal" style="--d:1">
-      Eighteen countries and counting. <em>These six come up most.</em>
+      Eighteen countries and counting. <em>These come up most.</em>
     </h2>
   </div>
 
+  <!--
+    Order below is the default (client-flagged, not final — see
+    ARCHITECTURE.md-style open items): USA -> UK -> Canada -> Australia ->
+    Germany -> Europe -> New Zealand -> remaining alphabetically (Dubai,
+    Singapore). The order itself is admin-configurable via the
+    "home_country_order" site setting (a JSON array of data-slug values);
+    the inline script at the bottom of this page reorders these step/panel
+    pairs at runtime to match whatever the admin has saved, so this static
+    order is only the fallback shown before that fetch resolves.
+  -->
   <div class="destinations-scroller">
-    <div class="destinations-steps">
+    <div class="destinations-steps" id="destSteps">
       <div
         class="dest-step is-active"
         data-index="0"
-        data-url="dubai.html"
+        data-slug="us"
+        data-name="United States"
+        data-url="countryPages/us.html"
         tabindex="0"
         role="link"
       >
         <span class="dest-step-num">01</span>
-        <span class="dest-step-continent">Asia</span>
-        <h3 class="dest-step-name">Dubai, UAE</h3>
+        <span class="dest-step-continent">North America</span>
+        <h3 class="dest-step-name">United States</h3>
         <p class="dest-step-copy">
-          International branch campuses, tax-free earnings, and a flight
-          time shorter than most domestic routes.
+          The widest range of programs on earth, from liberal arts colleges
+          to research powerhouses.
         </p>
-        <p class="dest-step-fact">Under 4 hours from most Indian cities</p>
+        <p class="dest-step-fact">1,000+ accredited institutions</p>
       </div>
 
       <div
         class="dest-step"
         data-index="1"
-        data-url="singapore.html"
+        data-slug="uk"
+        data-name="United Kingdom"
+        data-url="countryPages/uk.html"
         tabindex="0"
         role="link"
       >
         <span class="dest-step-num">02</span>
-        <span class="dest-step-continent">Asia</span>
-        <h3 class="dest-step-name">Singapore</h3>
-        <p class="dest-step-copy">
-          English-medium instruction, globally ranked universities, and a
-          launchpad into Asia-Pacific careers.
-        </p>
-        <p class="dest-step-fact">
-          2 universities in Asia's top 30
-        </p>
-      </div>
-
-      <div
-        class="dest-step"
-        data-index="2"
-        data-url="uk.html"
-        tabindex="0"
-        role="link"
-      >
-        <span class="dest-step-num">03</span>
         <span class="dest-step-continent">Europe</span>
         <h3 class="dest-step-name">United Kingdom</h3>
         <p class="dest-step-copy">
@@ -210,30 +211,14 @@
 
       <div
         class="dest-step"
-        data-index="3"
-        data-url="australia.html"
+        data-index="2"
+        data-slug="canada"
+        data-name="Canada"
+        data-url="countryPages/canada.html"
         tabindex="0"
         role="link"
       >
-        <span class="dest-step-num">04</span>
-        <span class="dest-step-continent">Oceania</span>
-        <h3 class="dest-step-name">Australia</h3>
-        <p class="dest-step-copy">
-          Globally ranked universities and a strong post-study visa pathway.
-        </p>
-        <p class="dest-step-fact">
-          8 universities in the world top 100
-        </p>
-      </div>
-
-      <div
-        class="dest-step"
-        data-index="4"
-        data-url="canada.html"
-        tabindex="0"
-        role="link"
-      >
-        <span class="dest-step-num">05</span>
+        <span class="dest-step-num">03</span>
         <span class="dest-step-continent">North America</span>
         <h3 class="dest-step-name">Canada</h3>
         <p class="dest-step-copy">
@@ -246,53 +231,149 @@
 
       <div
         class="dest-step"
+        data-index="3"
+        data-slug="australia"
+        data-name="Australia"
+        data-url="countryPages/australia.html"
+        tabindex="0"
+        role="link"
+      >
+        <span class="dest-step-num">04</span>
+        <span class="dest-step-continent">Oceania</span>
+        <h3 class="dest-step-name">Australia</h3>
+        <p class="dest-step-copy">
+          Globally ranked universities, a strong post-study visa pathway, and
+          a clear route toward permanent residency.
+        </p>
+        <p class="dest-step-fact">
+          8 universities in the world top 100
+        </p>
+      </div>
+
+      <div
+        class="dest-step"
+        data-index="4"
+        data-slug="germany"
+        data-name="Germany"
+        data-url="countryPages/germany.html"
+        tabindex="0"
+        role="link"
+      >
+        <span class="dest-step-num">05</span>
+        <span class="dest-step-continent">Europe</span>
+        <h3 class="dest-step-name">Germany</h3>
+        <p class="dest-step-copy">
+          Free or near-free tuition at public universities, including at
+          research powerhouses like the Technical University of Munich.
+        </p>
+        <p class="dest-step-fact">
+          18-month post-study work visa
+        </p>
+      </div>
+
+      <div
+        class="dest-step"
         data-index="5"
-        data-url="us.html"
+        data-slug="europe"
+        data-name="Europe"
+        data-url="europe.html"
         tabindex="0"
         role="link"
       >
         <span class="dest-step-num">06</span>
-        <span class="dest-step-continent">North America</span>
-        <h3 class="dest-step-name">United States</h3>
+        <span class="dest-step-continent">Europe</span>
+        <h3 class="dest-step-name">Europe</h3>
         <p class="dest-step-copy">
-          The widest range of programs on earth, from liberal arts colleges
-          to research powerhouses.
+          One region, dozens of low-cost public university systems — start
+          here, then narrow down a country with your counsellor.
         </p>
-        <p class="dest-step-fact">1,000+ accredited institutions</p>
+        <p class="dest-step-fact">
+          Covers Germany, Austria, Italy &amp; the Netherlands
+        </p>
+      </div>
+
+      <div
+        class="dest-step"
+        data-index="6"
+        data-slug="new-zealand"
+        data-name="New Zealand"
+        data-url="countryPages/newzealand.html"
+        tabindex="0"
+        role="link"
+      >
+        <span class="dest-step-num">07</span>
+        <span class="dest-step-continent">Oceania</span>
+        <h3 class="dest-step-name">New Zealand</h3>
+        <p class="dest-step-copy">
+          A close-knit, high-quality university system anchored by the
+          University of Auckland.
+        </p>
+        <p class="dest-step-fact">
+          University of Auckland — top 100 globally
+        </p>
+      </div>
+
+      <div
+        class="dest-step"
+        data-index="7"
+        data-slug="dubai"
+        data-name="Dubai, UAE"
+        data-url="countryPages/dubai.html"
+        tabindex="0"
+        role="link"
+      >
+        <span class="dest-step-num">08</span>
+        <span class="dest-step-continent">Asia</span>
+        <h3 class="dest-step-name">Dubai, UAE</h3>
+        <p class="dest-step-copy">
+          International branch campuses, tax-free earnings, and a flight
+          time shorter than most domestic routes.
+        </p>
+        <p class="dest-step-fact">Under 4 hours from most Indian cities</p>
+      </div>
+
+      <div
+        class="dest-step"
+        data-index="8"
+        data-slug="singapore"
+        data-name="Singapore"
+        data-url="countryPages/singapore.html"
+        tabindex="0"
+        role="link"
+      >
+        <span class="dest-step-num">09</span>
+        <span class="dest-step-continent">Asia</span>
+        <h3 class="dest-step-name">Singapore</h3>
+        <p class="dest-step-copy">
+          English-medium instruction, globally ranked universities, and a
+          launchpad into Asia-Pacific careers.
+        </p>
+        <p class="dest-step-fact">
+          2 universities in Asia's top 30
+        </p>
       </div>
     </div>
 
-    <div class="destinations-visual">
+    <div class="destinations-visual" id="destPanels">
       <div
         class="dest-panel is-active"
         data-index="0"
-        data-url="dubai.html"
+        data-slug="us"
+        data-url="countryPages/us.html"
         tabindex="0"
         role="link"
       >
         <img
-          src="https://picsum.photos/seed/kiaspire-dubai/1600/1100"
-          alt="Study in Dubai, UAE"
+          src="https://picsum.photos/seed/kiaspire-usa/1600/1100"
+          alt="Study in the United States"
         >
       </div>
 
       <div
         class="dest-panel"
         data-index="1"
-        data-url="singapore.html"
-        tabindex="0"
-        role="link"
-      >
-        <img
-          src="https://picsum.photos/seed/kiaspire-singapore/1600/1100"
-          alt="Study in Singapore"
-        >
-      </div>
-
-      <div
-        class="dest-panel"
-        data-index="2"
-        data-url="uk.html"
+        data-slug="uk"
+        data-url="countryPages/uk.html"
         tabindex="0"
         role="link"
       >
@@ -304,8 +385,23 @@
 
       <div
         class="dest-panel"
+        data-index="2"
+        data-slug="canada"
+        data-url="countryPages/canada.html"
+        tabindex="0"
+        role="link"
+      >
+        <img
+          src="https://picsum.photos/seed/kiaspire-canada/1600/1100"
+          alt="Study in Canada"
+        >
+      </div>
+
+      <div
+        class="dest-panel"
         data-index="3"
-        data-url="australia.html"
+        data-slug="australia"
+        data-url="countryPages/australia.html"
         tabindex="0"
         role="link"
       >
@@ -318,26 +414,70 @@
       <div
         class="dest-panel"
         data-index="4"
-        data-url="canada.html"
+        data-slug="germany"
+        data-url="countryPages/germany.html"
         tabindex="0"
         role="link"
       >
         <img
-          src="https://picsum.photos/seed/kiaspire-canada/1600/1100"
-          alt="Study in Canada"
+          src="https://picsum.photos/seed/kiaspire-germany/1600/1100"
+          alt="Study in Germany"
         >
       </div>
 
       <div
         class="dest-panel"
         data-index="5"
-        data-url="us.html"
+        data-slug="europe"
+        data-url="europe.html"
         tabindex="0"
         role="link"
       >
         <img
-          src="https://picsum.photos/seed/kiaspire-usa/1600/1100"
-          alt="Study in the United States"
+          src="https://picsum.photos/seed/kiaspire-europe/1600/1100"
+          alt="Study in Europe"
+        >
+      </div>
+
+      <div
+        class="dest-panel"
+        data-index="6"
+        data-slug="new-zealand"
+        data-url="countryPages/newzealand.html"
+        tabindex="0"
+        role="link"
+      >
+        <img
+          src="https://picsum.photos/seed/kiaspire-newzealand/1600/1100"
+          alt="Study in New Zealand"
+        >
+      </div>
+
+      <div
+        class="dest-panel"
+        data-index="7"
+        data-slug="dubai"
+        data-url="countryPages/dubai.html"
+        tabindex="0"
+        role="link"
+      >
+        <img
+          src="https://picsum.photos/seed/kiaspire-dubai/1600/1100"
+          alt="Study in Dubai, UAE"
+        >
+      </div>
+
+      <div
+        class="dest-panel"
+        data-index="8"
+        data-slug="singapore"
+        data-url="countryPages/singapore.html"
+        tabindex="0"
+        role="link"
+      >
+        <img
+          src="https://picsum.photos/seed/kiaspire-singapore/1600/1100"
+          alt="Study in Singapore"
         >
       </div>
 
@@ -345,13 +485,13 @@
 
       <div class="dest-visual-label">
         <span id="destLabelNum">01</span>
-        <span id="destLabelName">Dubai, UAE</span>
+        <span id="destLabelName">United States</span>
       </div>
     </div>
   </div>
 
   <div class="container destinations-more">
-    <p class="destinations-more-text reveal" style="--d:0">Also placing students in <a href="countryPages/germany.html">Germany</a>, and a dozen other countries beyond this list — ask your counsellor about yours.</p>
+    <p class="destinations-more-text reveal" style="--d:0">Also placing students in a dozen other countries beyond this list — ask your counsellor about yours.</p>
   </div>
 </section>
 
@@ -399,7 +539,7 @@
       <a href="register.html?service=book-a-consultation" class="btn btn-light">Book a Private Consultation</a>
       <div class="cta-contact">
         <span>hello@kiaspireAabroad.com</span>
-        <span>+91 80 4567 1234</span>
+        <span>+91 98316 31352</span>
       </div>
     </div>
   </div>
@@ -427,7 +567,7 @@
     <div class="footer-col">
       <p class="footer-heading">Contact</p>
       <a href="mailto:hello@kiaspireAabroad.com">hello@kiaspireAabroad.com</a>
-      <a href="tel:+918981572430">+91 89815 72430</a>
+      <a href="tel:+919831631352">+91 98316 31352</a>
       <span>Kolkata, India</span>
     </div>
     <div class="footer-col">
@@ -506,6 +646,91 @@
         console.error('getStories failed:', err);
         storiesSlider.innerHTML = '<div class="state-block">Couldn\'t load stories right now — see our <a href="stories.html" style="color:var(--brass-deep); font-weight:600;">stories page</a> instead.</div>';
       });
+  }
+
+  /* ---- University logo strip (first GET /api/home-logos, admin-editable) ---- */
+  var logoTrack = document.getElementById('homeLogoTrack');
+
+  function logoBadgeHtml(logo){
+    var inner = logo.logoUrl
+      ? '<img src="' + escapeHtml(logo.logoUrl) + '" alt="' + escapeHtml(logo.universityName) + ' logo">'
+      : '<span class="logo-badge-name">' + escapeHtml(logo.universityName) + '</span>' +
+        (logo.country ? '<span class="logo-badge-country">' + escapeHtml(logo.country) + '</span>' : '');
+    return '<div class="logo-badge">' + inner + '</div>';
+  }
+
+  function renderHomeLogos(logos){
+    if(!logos || !logos.length){
+      logoTrack.innerHTML = '';
+      var band = logoTrack.closest('.logo-marquee-band');
+      if(band) band.style.display = 'none';
+      return;
+    }
+    // Two copies back to back, same trick as the stats marquee above, so
+    // the CSS animation (translateX -50%) loops seamlessly.
+    var groupHtml = '<div class="logo-marquee-group">' + logos.map(logoBadgeHtml).join('') + '</div>';
+    logoTrack.innerHTML = groupHtml + groupHtml.replace('logo-marquee-group', 'logo-marquee-group" aria-hidden="true');
+  }
+
+  if(window.KiAspireAPI){
+    window.KiAspireAPI.getHomeLogos()
+      .then(renderHomeLogos)
+      .catch(function(err){
+        console.error('getHomeLogos failed:', err);
+        var band = logoTrack.closest('.logo-marquee-band');
+        if(band) band.style.display = 'none';
+      });
+  }
+
+  /* ---- Destination order (admin-configurable "home_country_order" setting) ----
+     The static HTML above already ships in the default order, so this only
+     needs to act when an admin has actually saved a different order. */
+  var destStepsWrap = document.getElementById('destSteps');
+  var destPanelsWrap = document.getElementById('destPanels');
+
+  function reorderBySlug(container, selector, order){
+    var els = Array.prototype.slice.call(container.querySelectorAll(selector));
+    var bySlug = {};
+    els.forEach(function(el){ bySlug[el.dataset.slug] = el; });
+
+    var ordered = [];
+    order.forEach(function(slug){
+      if(bySlug[slug]){ ordered.push(bySlug[slug]); delete bySlug[slug]; }
+    });
+    // Anything not named in the saved order (e.g. a slug typo, or a new
+    // destination added to the page but not yet added to the setting)
+    // still shows, appended at the end rather than silently dropped.
+    Object.keys(bySlug).forEach(function(slug){ ordered.push(bySlug[slug]); });
+
+    ordered.forEach(function(el, i){
+      el.dataset.index = String(i);
+      container.appendChild(el);
+    });
+
+    return ordered;
+  }
+
+  if(window.KiAspireAPI && destStepsWrap && destPanelsWrap){
+    window.KiAspireAPI.getSiteSettings()
+      .then(function(settings){
+        var raw = settings && settings.home_country_order;
+        if(!raw) return;
+
+        var order;
+        try { order = JSON.parse(raw); } catch(e){ console.error('Invalid home_country_order setting:', e); return; }
+        if(!Array.isArray(order) || !order.length) return;
+
+        var orderedSteps = reorderBySlug(destStepsWrap, '.dest-step', order);
+        reorderBySlug(destPanelsWrap, '.dest-panel', order);
+
+        orderedSteps.forEach(function(step, i){
+          var numEl = step.querySelector('.dest-step-num');
+          if(numEl) numEl.textContent = String(i+1).length < 2 ? '0'+(i+1) : String(i+1);
+        });
+
+        if(window.KiAspireReinitDestinations) window.KiAspireReinitDestinations();
+      })
+      .catch(function(err){ console.error('getSiteSettings (destinations order) failed:', err); });
   }
 })();
 </script>

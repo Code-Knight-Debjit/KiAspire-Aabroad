@@ -233,6 +233,7 @@ button{ font: inherit; background:none; border:none; cursor:pointer; color: inhe
 }
 .mark-icon{ width: 232px; height: 83px; flex-shrink: 0; }
 .nav-mark-text{
+  font-size: 8px;
   display: flex;
   flex-direction: column;
   line-height: 1.15;
@@ -259,7 +260,7 @@ button{ font: inherit; background:none; border:none; cursor:pointer; color: inhe
   gap: 40px;
 }
 .nav-links a{
-  font-size: 23px;
+  font-size: 18px;
   font-weight: 500;
   letter-spacing: 0.02em;
   position: relative;
@@ -454,6 +455,106 @@ button{ font: inherit; background:none; border:none; cursor:pointer; color: inhe
   to{ transform: translateX(-50%); }
 }
 @media (prefers-reduced-motion: reduce){ .marquee-track{ animation: none; } }
+
+/* ---- Home page university logo strip (Phase 0.2) ---- */
+.logo-marquee-band{
+  background: var(--ivory-deep);
+  padding: 30px 0;
+  overflow: hidden;
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+}
+.logo-marquee-track{
+  display: flex;
+  width: max-content;
+  animation: marquee 42s linear infinite;
+}
+.logo-marquee-band:hover .logo-marquee-track{ animation-play-state: paused; }
+.logo-marquee-group{
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  padding-right: 20px;
+  flex-shrink: 0;
+}
+.logo-badge{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  width: 168px;
+  height: 84px;
+  padding: 10px 14px;
+  flex-shrink: 0;
+  background: var(--ivory);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  white-space: normal;
+  text-align: center;
+}
+.logo-badge img{
+  max-width: 100%;
+  max-height: 40px;
+  object-fit: contain;
+}
+.logo-badge-name{
+  font-family: var(--font-body);
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 1.25;
+  color: var(--ink-soft);
+}
+.logo-badge-country{
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--brass-deep);
+}
+@media (prefers-reduced-motion: reduce){ .logo-marquee-track{ animation: none; overflow-x: auto; } }
+
+/* ---- Tabs (Visa Services: Student / Visitor) ---- */
+.tab-bar{
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-bottom: 36px;
+}
+.tab-btn{
+  padding: 12px 26px;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  background: var(--ivory);
+  font-weight: 600;
+  font-size: 14px;
+  color: var(--ink-soft);
+  transition: background .25s var(--ease), color .25s var(--ease), border-color .25s var(--ease);
+}
+.tab-btn:hover{ border-color: var(--brass); color: var(--ink); }
+.tab-btn.is-active{
+  background: var(--ink);
+  color: var(--ivory);
+  border-color: var(--ink);
+}
+
+/* ---- Content sections (Visa / Test Prep / Language detail pages) ---- */
+.content-sections{
+  display: grid;
+  gap: 28px;
+}
+.content-section{
+  padding: 28px 30px;
+  background: var(--ivory-deep);
+  border: 1px solid var(--line);
+  border-radius: 16px;
+}
+.content-section h3{
+  font-family: var(--font-display);
+  font-size: 1.3rem;
+  margin-bottom: 12px;
+  color: var(--ink);
+}
+.content-section .story-content{ max-width: none; }
 
 .approach-grid{
   display: grid;

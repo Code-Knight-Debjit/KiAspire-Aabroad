@@ -97,70 +97,84 @@
     revealTargets.forEach(function(el){ el.classList.add('is-visible'); });
   }
 
-  /* ---------- Destinations scrollytelling ---------- */
-  var destSteps = document.querySelectorAll('.dest-step');
-  var destPanels = document.querySelectorAll('.dest-panel');
+  /* ---------- Destinations scrollytelling ----------
+     Data-driven off each element's own data-name / data-url attributes
+     (rather than hardcoded arrays indexed by position) so the destination
+     order can be changed at runtime — e.g. by the admin-configurable
+     "home_country_order" setting, which reorders the DOM before calling
+     initDestinations() again. See window.KiAspireReinitDestinations below,
+     mirroring the existing KiAspireReinitStories pattern. */
   var destLabelNum = document.getElementById('destLabelNum');
   var destLabelName = document.getElementById('destLabelName');
-  // Continent-first order: Asia (Dubai, Singapore) and Europe (UK) lead,
-  // followed by the remaining top destinations.
-  var destNames = ['Dubai, UAE','Singapore','United Kingdom','Australia','Canada','United States'];
+  var destObserver = null;
 
-  function setActiveDest(index){
-    destSteps.forEach(function(s){ s.classList.toggle('is-active', s.dataset.index === String(index)); });
-    destPanels.forEach(function(p){ p.classList.toggle('is-active', p.dataset.index === String(index)); });
-    if(destLabelNum) destLabelNum.textContent = String(index+1).length < 2 ? '0'+(index+1) : String(index+1);
-    if(destLabelName) destLabelName.textContent = destNames[index] || '';
-  }
-
-  if(destSteps.length && 'IntersectionObserver' in window){
-    var destObserver = new IntersectionObserver(function(entries){
-      entries.forEach(function(entry){
-        if(entry.isIntersecting){
-          setActiveDest(parseInt(entry.target.getAttribute('data-index'),10));
-        }
-      });
-    }, { threshold: 0, rootMargin: '-45% 0px -45% 0px' });
-    destSteps.forEach(function(s){ destObserver.observe(s); });
-  }
-
-  /* ---------- Destination page navigation ---------- */
-var destinationPages = [
-  './countryPages/dubai.html',
-  './countryPages/singapore.html',
-  './countryPages/uk.html',
-  './countryPages/australia.html',
-  './countryPages/canada.html',
-  './countryPages/us.html'
-];
-
-function openDestinationPage(element){
-  var index = parseInt(element.getAttribute('data-index'), 10);
-  var pageUrl = destinationPages[index];
-
-  if(pageUrl){
-    window.location.href = pageUrl;
-  }
-}
-
-function makeDestinationClickable(element){
-  element.setAttribute('role', 'link');
-  element.setAttribute('tabindex', '0');
-
-  element.addEventListener('click', function(){
-    openDestinationPage(element);
-  });
-
-  element.addEventListener('keydown', function(event){
-    if(event.key === 'Enter' || event.key === ' '){
-      event.preventDefault();
-      openDestinationPage(element);
+  function openDestinationPage(element){
+    var pageUrl = element.getAttribute('data-url');
+    if(pageUrl){
+      window.location.href = pageUrl;
     }
-  });
-}
+  }
 
-destSteps.forEach(makeDestinationClickable);
-destPanels.forEach(makeDestinationClickable);
+  function makeDestinationClickable(element){
+    if(element.dataset.destBound) return;
+    element.dataset.destBound = '1';
+
+    element.setAttribute('role', 'link');
+    element.setAttribute('tabindex', '0');
+
+    element.addEventListener('click', function(){
+      openDestinationPage(element);
+    });
+
+    element.addEventListener('keydown', function(event){
+      if(event.key === 'Enter' || event.key === ' '){
+        event.preventDefault();
+        openDestinationPage(element);
+      }
+    });
+  }
+
+  function initDestinations(){
+    var destSteps = document.querySelectorAll('.dest-step');
+    var destPanels = document.querySelectorAll('.dest-panel');
+
+    function setActiveDest(index){
+      destSteps.forEach(function(s){ s.classList.toggle('is-active', s.dataset.index === String(index)); });
+      destPanels.forEach(function(p){ p.classList.toggle('is-active', p.dataset.index === String(index)); });
+      var active = destSteps[index];
+      var displayNum = String(index+1).length < 2 ? '0'+(index+1) : String(index+1);
+      if(destLabelNum) destLabelNum.textContent = displayNum;
+      if(destLabelName) destLabelName.textContent = (active && active.dataset.name) || '';
+    }
+
+    if(destObserver){
+      destObserver.disconnect();
+      destObserver = null;
+    }
+
+    if(destSteps.length && 'IntersectionObserver' in window){
+      destObserver = new IntersectionObserver(function(entries){
+        entries.forEach(function(entry){
+          if(entry.isIntersecting){
+            setActiveDest(parseInt(entry.target.getAttribute('data-index'),10));
+          }
+        });
+      }, { threshold: 0, rootMargin: '-45% 0px -45% 0px' });
+      destSteps.forEach(function(s){ destObserver.observe(s); });
+    }
+
+    destSteps.forEach(makeDestinationClickable);
+    destPanels.forEach(makeDestinationClickable);
+
+    setActiveDest(0);
+  }
+
+  initDestinations();
+
+  // Pages that reorder the destination step/panel DOM after this script
+  // runs (the homepage, per the admin-configurable country order) call
+  // this to re-bind the observer/labels against the new order.
+  window.KiAspireReinitDestinations = initDestinations;
 
   /* ---------- Process line-draw + step reveal ---------- */
   var processSection = document.getElementById('process');

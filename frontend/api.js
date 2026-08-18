@@ -352,6 +352,37 @@
     return response?.settings || {};
   }
 
+  /* ---------- public content pages (Visa / Test Prep / Language / Europe) ---------- */
+
+  // GET /api/content-pages/:category
+  async function getContentPages(category) {
+    const response = await request('/content-pages/' + encodeURIComponent(category));
+
+    return Array.isArray(response?.pages) ? response.pages : [];
+  }
+
+  // GET /api/content-pages/:category/:slug
+  async function getContentPage(category, slug) {
+    if (!category || !slug) {
+      throw new Error('category and slug are required');
+    }
+
+    const response = await request(
+      '/content-pages/' + encodeURIComponent(category) + '/' + encodeURIComponent(slug)
+    );
+
+    return response?.page || null;
+  }
+
+  /* ---------- public home logo strip ---------- */
+
+  // GET /api/home-logos
+  async function getHomeLogos() {
+    const response = await request('/home-logos');
+
+    return Array.isArray(response?.logos) ? response.logos : [];
+  }
+
   /* ---------- student registration / auth / dashboard ---------- */
 
   // POST /api/user/register
@@ -867,6 +898,99 @@
     );
   }
 
+  /* ---------- admin content page APIs (Visa / Test Prep / Language / Europe) ---------- */
+
+  // GET /api/content-pages/admin/:category/all
+  async function getAdminContentPages(category) {
+    const response = await request(
+      '/content-pages/admin/' + encodeURIComponent(category) + '/all',
+      { auth: true }
+    );
+
+    return Array.isArray(response?.pages) ? response.pages : [];
+  }
+
+  // POST /api/content-pages/:category
+  function createContentPage(category, payload) {
+    if (!category) {
+      return Promise.reject(new Error('category is required'));
+    }
+
+    return request('/content-pages/' + encodeURIComponent(category), {
+      method: 'POST',
+      auth: true,
+      body: payload
+    });
+  }
+
+  // PATCH /api/content-pages/:id
+  function updateContentPage(id, payload) {
+    if (!id) {
+      return Promise.reject(new Error('Page ID is required'));
+    }
+
+    return request('/content-pages/' + encodeURIComponent(id), {
+      method: 'PATCH',
+      auth: true,
+      body: payload
+    });
+  }
+
+  // DELETE /api/content-pages/:id
+  function deleteContentPage(id) {
+    if (!id) {
+      return Promise.reject(new Error('Page ID is required'));
+    }
+
+    return request('/content-pages/' + encodeURIComponent(id), {
+      method: 'DELETE',
+      auth: true
+    });
+  }
+
+  /* ---------- admin home logo APIs ---------- */
+
+  // GET /api/home-logos/admin/all
+  async function getAdminHomeLogos() {
+    const response = await request('/home-logos/admin/all', { auth: true });
+
+    return Array.isArray(response?.logos) ? response.logos : [];
+  }
+
+  // POST /api/home-logos
+  function createHomeLogo(payload) {
+    return request('/home-logos', {
+      method: 'POST',
+      auth: true,
+      body: payload
+    });
+  }
+
+  // PATCH /api/home-logos/:id
+  function updateHomeLogo(id, payload) {
+    if (!id) {
+      return Promise.reject(new Error('Logo ID is required'));
+    }
+
+    return request('/home-logos/' + encodeURIComponent(id), {
+      method: 'PATCH',
+      auth: true,
+      body: payload
+    });
+  }
+
+  // DELETE /api/home-logos/:id
+  function deleteHomeLogo(id) {
+    if (!id) {
+      return Promise.reject(new Error('Logo ID is required'));
+    }
+
+    return request('/home-logos/' + encodeURIComponent(id), {
+      method: 'DELETE',
+      auth: true
+    });
+  }
+
   /* ---------- admin story APIs ---------- */
 
   // GET /api/story
@@ -956,6 +1080,9 @@
     getFreeStudyCountries: getFreeStudyCountries,
     getFreeStudyCountry: getFreeStudyCountry,
     getSiteSettings: getSiteSettings,
+    getContentPages: getContentPages,
+    getContentPage: getContentPage,
+    getHomeLogos: getHomeLogos,
 
     registerUser: registerUser,
     studentLogin: studentLogin,
@@ -994,6 +1121,16 @@
 
     getAdminSiteSettings: getAdminSiteSettings,
     updateSiteSetting: updateSiteSetting,
+
+    getAdminContentPages: getAdminContentPages,
+    createContentPage: createContentPage,
+    updateContentPage: updateContentPage,
+    deleteContentPage: deleteContentPage,
+
+    getAdminHomeLogos: getAdminHomeLogos,
+    createHomeLogo: createHomeLogo,
+    updateHomeLogo: updateHomeLogo,
+    deleteHomeLogo: deleteHomeLogo,
 
     getAdminStories: getAdminStories,
     createStory: createStory,

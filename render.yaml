@@ -1,0 +1,41 @@
+# Render Blueprint for dev/staging hosting of this app.
+#
+# The production deployment target remains HostingRaja/cPanel per
+# CLAUDE.md — this file exists purely to make spinning up a throwaway or
+# dev instance on Render fast and repeatable. See DEPLOY-RENDER.md for the
+# full walkthrough (import steps, env var values, migration caveats).
+#
+# This does NOT provision a database — an existing Render Postgres
+# instance is assumed (DATABASE_URL is filled in manually in the
+# dashboard) so importing this blueprint never creates a second database
+# alongside one you already have.
+services:
+  - type: web
+    name: kiaspire-aabroad-dev
+    runtime: node
+    plan: free
+    branch: dev
+    rootDir: backend
+    buildCommand: npm install
+    startCommand: npm start
+    healthCheckPath: /healthz
+    # Runs before each new instance starts. Requires a paid instance type —
+    # on the free plan this is skipped by Render, so run `npm run migrate`
+    # and `npm run seed` manually via the Shell tab after first deploy
+    # (see DEPLOY-RENDER.md).
+    preDeployCommand: npm run migrate && npm run seed
+    envVars:
+      - key: DATABASE_URL
+        sync: false
+      - key: JWT_SECRET
+        generateValue: true
+      - key: JWT_EXPIRE
+        value: 7d
+      - key: ADMIN_NAME
+        sync: false
+      - key: ADMIN_EMAIL
+        sync: false
+      - key: ADMIN_PHONE
+        sync: false
+      - key: ADMIN_PASSWORD
+        sync: false

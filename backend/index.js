@@ -16,8 +16,18 @@ const storyRoutes = require("./Routes/storyRoute");
 const applicationRoutes = require("./Routes/applicationRoute");
 const freeStudyRoutes = require("./Routes/freeStudyRoute");
 const siteSettingRoutes = require("./Routes/siteSettingRoute");
+const contentPageRoutes = require("./Routes/contentPageRoute");
+const homeLogoRoutes = require("./Routes/homeLogoRoute");
 
 const app = express();
+
+// cPanel/Passenger terminates TLS itself and proxies to this process over
+// plain HTTP, so req.secure is false in production unless Express is told to
+// trust the proxy's X-Forwarded-Proto header. Without this, the Secure flag
+// authCookie.js derives from req.secure never actually gets applied to the
+// session cookies on the live HTTPS site. One hop — Passenger is the only
+// proxy in front of the app, so don't blanket-trust the whole chain.
+app.set("trust proxy", 1);
 
 // Fail fast if Postgres isn't reachable, then ensure the default admin
 // exists (mirrors the previous Mongo-connect-then-seed boot sequence).
@@ -42,6 +52,9 @@ app.use(
   })
 );
 
+// Render (and similar PaaS) health check for zero-downtime deploy cutover.
+app.get("/healthz", (req, res) => res.status(200).json({ status: "ok" }));
+
 // Routes
 app.use("/api/user", userRoutes);
 app.use("/api/admin", adminRoutes);
@@ -50,6 +63,8 @@ app.use("/api/services", serviceRoutes);
 app.use("/api/story", storyRoutes);
 app.use("/api/free-study", freeStudyRoutes);
 app.use("/api/site-settings", siteSettingRoutes);
+app.use("/api/content-pages", contentPageRoutes);
+app.use("/api/home-logos", homeLogoRoutes);
 
 // Server-side page guards — must run before express.static, otherwise an
 // unauthenticated request could reach these HTML shells directly. The
