@@ -34,22 +34,23 @@ here — `render.yaml` and this doc just make repeat setup fast.
    `JWT_EXPIRE` defaults to `7d`. `PORT` is injected by Render itself — do
    not add it.
 
-4. Deploy. If you're on a **paid** instance type, `preDeployCommand` in
-   `render.yaml` runs `npm run migrate && npm run seed` automatically
-   before cutover — nothing else to do.
-
-   If you're on the **free** plan, Render skips `preDeployCommand` (it
-   requires a paid instance). After the first deploy, open the service's
-   **Shell** tab (or `render ssh`, if the CLI is set up) and run:
+4. Run migrations and seeds **locally**, pointed at the Render Postgres
+   instance, before or right after the first deploy:
    ```
-   npm run migrate
-   npm run seed
+   DATABASE_URL="<same connection string you put in step 3>" npm run migrate
+   DATABASE_URL="<same connection string>" npm run seed
    ```
-   both are idempotent, safe to re-run after future deploys if you change
-   migrations/seeds.
+   (or just set `DATABASE_URL` in `backend/.env` to that value temporarily
+   and run `npm run migrate` / `npm run seed` as usual). This isn't
+   optional busywork — Render's free plan doesn't give web services a
+   Shell/SSH tab, and the Blueprint validator flat-out rejects a
+   `preDeployCommand` on the free plan (it won't even let you import
+   `render.yaml` with one present), so there's no in-dashboard way to run
+   a one-off command on this plan. Both scripts are idempotent, safe to
+   re-run after future deploys if migrations/seeds change.
 
-5. Visit the service's `*.onrender.com` URL — you should see the actual
-   homepage, not a bare API message.
+5. Deploy the web service. Visit the service's `*.onrender.com` URL — you
+   should see the actual homepage, not a bare API message.
 
 ## Option B — Manual web service (no blueprint)
 
@@ -63,8 +64,9 @@ If you'd rather not use `render.yaml`:
 6. Add the same env vars as the table in Option A (all seven —
    `DATABASE_URL`, `JWT_SECRET`, `JWT_EXPIRE`, `ADMIN_NAME`, `ADMIN_EMAIL`,
    `ADMIN_PHONE`, `ADMIN_PASSWORD`).
-7. Deploy, then run `npm run migrate && npm run seed` once via the Shell
-   tab (same as the free-plan note in Option A).
+7. Deploy, then run `npm run migrate` / `npm run seed` locally against the
+   same `DATABASE_URL` (same note as Option A, step 4 — free-tier services
+   have no Shell/SSH access to run this on the Render side).
 
 ---
 
@@ -72,7 +74,8 @@ If you'd rather not use `render.yaml`:
 
 - **Free plan spins down on idle** and cold-starts on the next request
   (10-60s). Fine for dev; if that's annoying, use a paid instance type
-  instead (also unlocks `preDeployCommand`).
+  instead (also unlocks Shell access and `preDeployCommand`, if you want
+  to add one back to `render.yaml` at that point).
 - **`cors({ origin: "*" })`** in `backend/index.js` already allows any
   origin, so the `onrender.com` URL works out of the box with no CORS
   changes.

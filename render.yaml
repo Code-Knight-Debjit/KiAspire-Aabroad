@@ -19,11 +19,11 @@ services:
     buildCommand: npm install
     startCommand: npm start
     healthCheckPath: /healthz
-    # Runs before each new instance starts. Requires a paid instance type —
-    # on the free plan this is skipped by Render, so run `npm run migrate`
-    # and `npm run seed` manually via the Shell tab after first deploy
-    # (see DEPLOY-RENDER.md).
-    preDeployCommand: npm run migrate && npm run seed
+    # No preDeployCommand here — Render's Blueprint validator rejects it
+    # outright on the free plan (not just skips it; the whole blueprint
+    # import fails). Run `npm run migrate` / `npm run seed` locally against
+    # DATABASE_URL instead — see DEPLOY-RENDER.md. Free-tier services also
+    # don't get Shell/SSH access, so that's not a fallback here either.
     envVars:
       - key: DATABASE_URL
         sync: false
